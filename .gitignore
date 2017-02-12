@@ -89,5 +89,9 @@ ENV/
 .ropeproject
 
 # json and dat to store personal data
-.json
+*.json
+*.dat
 .dat
+
+*.xml
+*.iml
