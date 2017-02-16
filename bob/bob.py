@@ -9,6 +9,7 @@ import telepot
 import datetime
 import codecs
 import random
+import json
 
 # TODO kaikilla ei ole nimia telegramissa
 # TODO kerro uusi pistemaara aina kun kayttajan pistemaara muuttuu
@@ -29,15 +30,6 @@ import random
 #	"userid1"|"user1score"
 #	"userid2"|"user2score"
 
-# filename where the user data is stored
-datafileName = "bob-data.json"
-
-# Dict where all info about users is saved before writing to .json file
-userData = {}
-
-# Ranks read from ranks.txt
-ranks = []
-
 
 latestLeetDay = int(datetime.datetime.now().strftime("%Y%m%d")) - 1
 
@@ -56,12 +48,24 @@ def read_ranks_file():
 
 # Reads bob-data.json file and returns its contents
 def read_data_file():
-    pass
+    try:
+        with open("bob-data.json", mode="r") as data_file:
+            json_string = data_file.read()
+            leet_data = json.loads(json_string)
+            return leet_data
+    except:
+        pass
 
 
 # dumps the data to .json file
 def write_file(data):
-    pass
+    try:
+        with open("bob-data.json", mode="w") as data_file:
+            json_string = json.dumps(data)
+            data_file.write(json_string)
+        pass
+    except:
+        pass
 
 
 def handle(msg):
