@@ -28,26 +28,22 @@ import random
 #	"chat_id2"
 #	"userid1"|"user1score"
 #	"userid2"|"user2score"
-#
-# siis otsikkona chatin id ja taman perassa kayttajien pisteet.
-# Eri chatit erottuvat toisistaan tyhjalla rivilla, jotka ohjelma etsii.
-# Tyhjia riveja saa olla toistaiseksi vain tasan 1 chattien valissa
 
-# tiedoston nimi jonne 1337 pisteet tallennetaan
-scoresFileName = "1337scores.txt"
+# filename where the user data is stored
+datafileName = "bob-data.json"
 
-# Dict where all info about users is saved before writing to .txt file
-tsatti_lista = {}
+# Dict where all info about users is saved before writing to .json file
+userData = {}
 
 # Ranks read from ranks.txt
 ranks = []
 
-global latestLeetDay
+
 latestLeetDay = int(datetime.datetime.now().strftime("%Y%m%d")) - 1
 
 
-# Reads the ranks.txt to ranks list and returns the list
-def readRanksFile():
+# Reads the ranks.txt and returns it contents as a list
+def read_ranks_file():
     file = open('ranks.txt')
 
     for line in file:
@@ -58,70 +54,14 @@ def readRanksFile():
     return ranks
 
 
-# Lukee tiedoston tietorakenteeseen, palauttaa tsatti_lista:n
-def readFile():
-    # try:
-    # scoresFileNamelle annetaan arvo koodin alussa
-    file = open(scoresFileName, 'r')
-
-    firstAfterEmptyLine = True
-    lineNumber = 1
-    for line in file:
-        line = line.strip()
-        if line == "":
-            # print("R%s Tyhj� rivi"%(lineNumber))
-            firstAfterEmptyLine = True
-
-        elif firstAfterEmptyLine:
-            firstAfterEmptyLine = False
-            # chat_id on seuraava rivi jolla lukee jotain tyhjan rivin jalkeen
-            # ja se viedaan dictiin
-            # elements = line.rsplit("|")
-            # chat_id = elements[0]
-            chat_id = line
-            tsatti_lista[chat_id] = {}
-        # print("R%s chatID= %s" %(lineNumber, chat_id))
-
-        else:
-            elements = line.rsplit("|")
-            if len(elements) == 2:
-                # print("R%s %s, kelpaa"%(lineNumber, line))
-                tsatti_lista[chat_id][elements[0]] = elements[1]
-            else:
-                pass
-                # print("R%s %s, virheellinen"%(lineNumber, line))
-
-        lineNumber = lineNumber + 1
-    file.close()
-    return tsatti_lista
+# Reads bob-data.json file and returns its contents
+def read_data_file():
+    pass
 
 
-# except:
-#	print("Virhe: Tiedostoa ei saa luettua")
-#	bot.sendMessage(DEBUG CHATIN ID TÄHÄN, "Botti on havainnut virheen, tiedostoa ei saatu luettua")
-
-# Kirjoittaa tietorakenteen tiedostoon
-def writeFile(tsatti_lista):
-    #	try:
-    # scoresFileNamelle annetaan arvo koodin alussa
-    file = open(scoresFileName, 'w')
-    for chat_id in tsatti_lista:
-        file.write(str(chat_id) + str("\n"))
-
-        for user in tsatti_lista[str(chat_id)]:
-            try:
-                file.write(str(user) + "|" + str(tsatti_lista[chat_id][user]) + str("\n"))
-            except:
-                pass
-        file.write(str("\n"))
-    file.close
-
-
-"""
-	except:
-		print("Virhe: Tiedostoa ei saa luettua")
-		bot.sendMessage(DEBUG CHATIN ID TÄHÄN, "Botti on havainnut virheen, tiedostoa ei saatu kirjoitettua")
-"""
+# dumps the data to .json file
+def write_file(data):
+    pass
 
 
 def handle(msg):
@@ -135,10 +75,10 @@ def handle(msg):
     ranks = readRanksFile()
     global latestLeetDay
 
-    if chat_id in tsatti_lista:
+    if chat_id in userData:
         pass
     else:
-        tsatti_lista[chat_id] = {}
+        userData[chat_id] = {}
 
     try:
         userid = msg['from']["first_name"] + str(" ") + msg['from']["last_name"]
@@ -155,14 +95,14 @@ def handle(msg):
         if (int(now.strftime('%H')) + 2 == 13 and int(now.strftime('%M')) == 37):  # or userid == 'developer':
             if latestLeetDay != int(datetime.datetime.now().strftime("%Y%m%d")):
                 readFile()
-                if userid in str(tsatti_lista[chat_id]):
-                    tsatti_lista[chat_id][userid] = int(tsatti_lista[chat_id][userid]) + 1
+                if userid in str(userData[chat_id]):
+                    userData[chat_id][userid] = int(userData[chat_id][userid]) + 1
                 else:
-                    tsatti_lista[chat_id][userid] = 1
+                    userData[chat_id][userid] = 1
 
-                message = str('Elite! %s has been promoted to %s' % (userid, ranks[int(tsatti_lista[chat_id][userid])]))
+                message = str('Elite! %s has been promoted to %s' % (userid, ranks[int(userData[chat_id][userid])]))
                 bot.sendMessage(chat_id, message)
-                writeFile(tsatti_lista)
+                writeFile(userData)
                 latestLeetDay = int(datetime.datetime.now().strftime("%Y%m%d"))
             else:
                 bot.sendMessage(chat_id, ("%s was too slow :(" % userid))
@@ -174,7 +114,7 @@ def handle(msg):
         message = "Ranks: "
         readFile()
         ranks = readRanksFile()
-        for user, score in tsatti_lista[chat_id].items():
+        for user, score in userData[chat_id].items():
             message = message + str("\n") + ranks[int(score)] + " " + str(user)
         bot.sendMessage(chat_id, message)
 
