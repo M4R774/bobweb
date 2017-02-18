@@ -1,4 +1,6 @@
 import json
+import sys
+
 
 # Reads the ranks.txt and returns it contents as a list
 def read_ranks_file():
@@ -12,15 +14,15 @@ def read_ranks_file():
     return ranks
 
 
-# Reads bob-data.json file and returns its contents
-def read_data_file():
+# Reads .json file and returns its contents
+def read_json_file(file_name):
     try:
-        with open("bob-data.json", mode="r") as data_file:
+        with open(file_name, mode="r") as data_file:
             json_string = data_file.read()
             leet_data = json.loads(json_string)
             return leet_data
     except:
-        pass
+        print(sys.exc_info()[0])
 
 
 # dumps the data to .json file
@@ -31,4 +33,5 @@ def write_file(data):
             data_file.write(json_string)
         pass
     except:
-        pass
+        print(sys.exc_info()[0])
+

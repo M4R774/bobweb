@@ -1,31 +1,28 @@
-# -*- coding: utf-8 -*-
+import message_handler
+import data_handler
 
-from bob import message_handler
-from bob import data_handler
 
-import locale
-import os
-import sys
-import unicodedata
 import sys
 import time
 import telepot
-import datetime
-import codecs
-import random
+import json
 
-# TODO rankit ja ilmoitukset ylennyksist�
-# TODO ei kahta kertaa pisteite pelaajille
-# TODO tarkasta ett� pistemäärä ei ole > rankkien määrä
-# TODO Prestiget
+settings_data = {}
+try:
+    with open("settings.json", mode="r") as data_file:
+        json_string = data_file.read()
+        settings_data = json.loads(json_string)
+except:
+    print("Failed to read settings.json")
+    print(sys.exc_info()[0])
+    print("Exiting...")
+    exit()
 
-latest_leet_day = int(datetime.datetime.now().strftime("%Y%m%d")) - 1
-
-
-
-bot = telepot.Bot('botin id tähän')
-bot.notifyOnMessage(handle)
-print("Waiting for input...")
+bot = telepot.Bot( settings_data["bot_token"] )
+bot.message_loop(message_handler.handle)
+print("Bob is now running and receiving messages. ")
+print(bot.getMe())
 
 while True:
     time.sleep(10)
+    exit()
