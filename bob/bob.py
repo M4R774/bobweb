@@ -1,6 +1,10 @@
 import message_handler
 import data_handler
 
+from telepot.delegate import pave_event_space, per_chat_id, create_open
+
+# käyttäjä olio
+# chat olio
 
 import sys
 import time
@@ -25,4 +29,5 @@ print(bot.getMe())
 
 while True:
     time.sleep(10)
-    exit()
+
+

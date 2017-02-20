@@ -19,16 +19,16 @@ def read_json_file(file_name):
     try:
         with open(file_name, mode="r") as data_file:
             json_string = data_file.read()
-            leet_data = json.loads(json_string)
-            return leet_data
+            data = json.loads(json_string)
+            return data
     except:
         print(sys.exc_info()[0])
 
 
 # dumps the data to .json file
-def write_file(data):
+def write_file(data, filename):
     try:
-        with open("bob-data.json", mode="w") as data_file:
+        with open(filename, mode="w") as data_file:
             json_string = json.dumps(data)
             data_file.write(json_string)
         pass
