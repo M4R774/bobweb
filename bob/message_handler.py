@@ -7,15 +7,23 @@ def bob_handler(msg):
     chat_dict = data_handler.read_json_file("bob-data.json")
     message = msg['text']
     existing_chats = []
+    #print(chat_dict)
     for chat in chat_dict:
-        existing_chats.append(chat[id])
-    print(msg)
+        #print(chat)
+        existing_chats.append(chat_dict[chat])
+    #print(msg)
     if msg['chat']['id'] not in existing_chats:
+        chat_dict['chats'] = {}
         chat_dict['chats'][msg['chat']['id']] = {}
+        chat_dict['chats'][msg['chat']['id']]['users'] = {}
+        chat_dict['chats'][msg['chat']['id']]['users'][msg['from']['id']] = {}
         print(chat_dict)
 
     if message == '1337':
-        print("Hmm...")
+        if msg['from']['id'] in chat_dict['chats'][msg['chat']['id']]['users']:
+            chat_dict['chats'][msg['chat']['id']]['users'][msg['from']['id']]['score'] += 1
+        else:
+            chat_dict['chats'][msg['chat']['id']]['users'][msg['from']['id']]['score'] = 1
 
 # called everytime message arrives
 def handle(msg):
