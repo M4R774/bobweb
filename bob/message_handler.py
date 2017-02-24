@@ -72,7 +72,7 @@ def bob_handler(msg, bot):
                 # 20% chance for demotes
                 if randint(0, 2) == 0:
                     chats[msg_chat_id]['users'][msg_from_id]['score'] -= 1
-                    up = u"\U0001F53C"
+                    up = u"\U0001F53D"
                     reply = "Rookie mistake! " + userid + " has been demoted. " + up
                     bot.sendMessage(msg_chat_id, reply)
                 chats[msg_chat_id]['mistakes'] += 1
