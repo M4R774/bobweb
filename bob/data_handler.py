@@ -26,7 +26,7 @@ def read_json_file(file_name):
 
 
 # dumps the data to .json file
-def write_file(data, filename):
+def write_json_file(data, filename):
     try:
         with open(filename, mode="w") as data_file:
             json_string = json.dumps(data)

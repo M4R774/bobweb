@@ -22,10 +22,20 @@ except:
     print("Exiting...")
     exit()
 
+
+def handle(msg):
+    content_type, chat_type, chat_id = telepot.glance(msg)
+    settings = data_handler.read_json_file("settings.json")
+
+    if True:  # content_type == "text" and settings["bob_ID"] == chat_id:
+        message_handler.bob_handler(msg, bot)
+
 bot = telepot.Bot( settings_data["bot_token"] )
-bot.message_loop(message_handler.handle)
+bot.message_loop(handle)
+
+
 print("Bob is now running and receiving messages. ")
-print(bot.getMe())
+#print(bot.getMe())
 
 while True:
     time.sleep(10)
