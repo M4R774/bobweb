@@ -6,7 +6,6 @@ import time
 # TODO optimoi leetin suoritusjärjestys
 # TODO tee assign_name funktiosta fiksumpi
 
-# TODO prestige
 # TODO friday
 # TODO nimet järjestykseen
 
@@ -39,10 +38,10 @@ def bob_handler(msg, bot):
     msg_from_id = str(msg['from']['id'])
     userid = assign_name(msg)
     # Test prints
-    #print("chat_dict:", chat_dict)
-    #print("msg:", msg)
+    # print("chat_dict:", chat_dict)
+    # print("msg:", msg)
     # print(msg['chat']['id'])
-    #print(chats.keys())
+    # print(chats.keys())
 
     if msg_chat_id not in chats.keys():
         chats[msg_chat_id] = {}
@@ -65,18 +64,20 @@ def bob_handler(msg, bot):
 
         #print(msg_from_id)
         #print(chats[msg_chat_id]['users'].keys())
-        if True: #nowhours == 13 and 36 <= nowminutes <= 38:
+        if nowhours == 13 and 36 <= nowminutes <= 38:
             ranks = data_handler.read_ranks_file()
             if chats[msg_chat_id]['latestleet'] != today:
                 chats[msg_chat_id]['latestleet'] = today
                 if chats[msg_chat_id]['users'][msg_from_id]['score'] < 56:
-                    if msg_from_id not in chats[msg_chat_id]['users']:
+                    if msg_from_id not in chats[msg_chat_id]['users'].keys():
                         chats[msg_chat_id]['users'][msg_from_id]['score'] = 1
+                        chats[msg_chat_id]['users'][msg_from_id]['prestige'] = 0
+                        chats[msg_chat_id]['users'][msg_from_id]['userid'] = userid
                     else:
                         chats[msg_chat_id]['users'][msg_from_id]['score'] += 1
                     up = u"\U0001F53C"
                     reply = "Elite! " + userid + " has been promoted to " + ranks[chats[msg_chat_id]['users'][msg_from_id]['score']] + "! " + up
-                    # bot.sendMessage(msg_chat_id, reply)
+                    bot.sendMessage(msg_chat_id, reply)
                 else:
                     chats[msg_chat_id]['users'][msg_from_id]['score'] = 0
                     chats[msg_chat_id]['users'][msg_from_id]['prestige'] += 1
@@ -87,12 +88,13 @@ def bob_handler(msg, bot):
                         chats[msg_chat_id]['users'][msg_from_id]['score'] -= 1
                     down = u"\U0001F53D"
                     reply = "Rookie mistake! " + userid + " has been demoted to " + ranks[chats[msg_chat_id]['users'][msg_from_id]['score']] + ". " + down
-                    # bot.sendMessage(msg_chat_id, reply)
+                    bot.sendMessage(msg_chat_id, reply)
                 chats[msg_chat_id]['mistakes'] += 1
     # print(chat_dict[msg_chat_id])
     data_handler.write_json_file(chat_dict, "bob-data.json")
 
-    if message == "moi123" and msg_from_id == "67948831":
+    if message == "meri on tullut takaisin123" and msg_chat_id == "67948831":
+        settings = data_handler.read_json_file("settings.json")
         sunglasses = u"\U0001F60E"
-        reply = "Moi! " + sunglasses + " #hype"
-        bot.sendMessage(msg_chat_id, reply)
+        reply = "I'm back! " + sunglasses + " #hype"
+        bot.sendMessage(settings["bob_ID"], reply)
