@@ -97,4 +97,4 @@ def bob_handler(msg, bot):
         settings = data_handler.read_json_file("settings.json")
         sunglasses = u"\U0001F60E"
         reply = "I'm back! " + sunglasses + " #hype"
-        bot.sendMessage(settings["bob_ID"], reply)
+        bot.sendMessage(msg_chat_id, reply)
