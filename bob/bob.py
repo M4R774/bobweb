@@ -1,14 +1,13 @@
 import message_handler
 import data_handler
+import scheduled
 
-# import schedule
-
-# käyttäjä olio
-# chat olio
+# seperately installed
+import telepot
+import schedule
 
 import sys
 import time
-import telepot
 import json
 
 settings_data = {}
@@ -33,13 +32,13 @@ def handle(msg):
 bot = telepot.Bot( settings_data["bot_token"] )
 bot.message_loop(handle)
 
-#schedule.every().friday.at("16:15").do(bobFriday)
+schedule.every().friday.at("16:15").do(scheduled.bob_friday(bot))
 
 print("Bob is now running and receiving messages. ")
 # print(bot.getMe())
 
 while True:
-    # schedule.run_pending()
+    schedule.run_pending()
     time.sleep(55)
 
 

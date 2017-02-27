@@ -6,7 +6,6 @@ import time
 # TODO optimoi leetin suoritusjärjestys
 # TODO tee assign_name funktiosta fiksumpi
 
-# TODO friday
 # TODO nimet järjestykseen
 
 
