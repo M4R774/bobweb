@@ -28,14 +28,22 @@ def assign_name(msg):
 
 
 def bob_handler(msg, bot):
-    chat_dict = data_handler.read_json_file("bob-data.json")
-    if "chats" not in chat_dict.keys():
-        chat_dict['chats'] = {}
-    chats = chat_dict['chats']
+
+    #chats = chat_dict['chats']
     message = msg['text']
     msg_chat_id = str(msg['chat']['id'])
     msg_from_id = str(msg['from']['id'])
     userid = assign_name(msg)
+
+    if msg['text'] == "moi" and msg_chat_id == "67948831":
+        sunglasses = u"\U0001F60E"
+        reply = "I'm back! " + sunglasses + " #hype"
+        bot.sendMessage("67948831", reply)
+"""
+    chat_dict = data_handler.read_json_file("bob-data.json")
+    #if "chats" not in chat_dict.keys():
+    #    chat_dict['chats'] = {}
+
     # Test prints
     # print("chat_dict:", chat_dict)
     # print("msg:", msg)
@@ -97,3 +105,5 @@ def bob_handler(msg, bot):
         sunglasses = u"\U0001F60E"
         reply = "I'm back! " + sunglasses + " #hype"
         bot.sendMessage(settings["bob_ID"], reply)
+    """
+
