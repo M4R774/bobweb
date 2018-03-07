@@ -39,6 +39,13 @@ def bob_handler(msg, bot):
         sunglasses = u"\U0001F60E"
         reply = "I'm back! " + sunglasses + " #hype"
         bot.sendMessage("67948831", reply)
+
+
+
+    if msg['text'] == "database_test" and msg_chat_id == "67948831":
+        mario = TelegramUser(id=msg_from_id)
+        reply = User.objects.all()[0]
+        bot.sendMessage("67948831", reply)
 """
     chat_dict = data_handler.read_json_file("bob-data.json")
     #if "chats" not in chat_dict.keys():
