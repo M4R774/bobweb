@@ -18,6 +18,9 @@ class TelegramUser():
     firstName = models.CharField(max_length=255)
     lastName = models.CharField(max_length=255)
 
+    def __str__(self):
+        return str(self.id)
+
 
 class ChatMember():
     chat = models.ForeignKey(Chat, related_name="wat dis?", null=True)

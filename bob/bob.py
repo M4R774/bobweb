@@ -9,7 +9,15 @@ import schedule
 import sys
 import time
 import json
+import os
+from . web/halloffame.models import *
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
 
+
+# Have to do this for it to work in 1.9.x!
+from django.core.wsgi import get_wsgi_application
+application = get_wsgi_application()
+#############
 
 def handle(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
@@ -32,7 +40,8 @@ bot = telepot.Bot( settings_data["bot_token"] )
 bot.message_loop(handle)
 
 # commented out because of bug
-#schedule.every().friday.at("16:15").do(scheduled.bob_friday(bot))
+# schedule.every().friday.at("16:15").do(scheduled.bob_friday(bot))
+
 
 print("Bob is now running and receiving messages. ")
 # print(bot.getMe())
