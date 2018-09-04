@@ -10,7 +10,7 @@ import sys
 import time
 import json
 import os
-from . web/halloffame.models import *
+from . web models import *
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
 
 
