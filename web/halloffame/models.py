@@ -9,7 +9,6 @@ class Chat():
     messageCount = models.PositiveIntegerField(default=0)
 
 
-
 class TelegramUser():
     id = models.CharField(max_length=255, unique=True)
     nickname = models.CharField(max_length=255)
@@ -18,6 +17,7 @@ class TelegramUser():
 
     def __str__(self):
         return str(self.id)
+
 
 # Chat members tie the users and chats. TelegramUser can be in many different chats with different ranks.
 class ChatMember():
