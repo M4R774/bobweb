@@ -1,4 +1,5 @@
-# Byte-compiled / optimized / DLL files
+https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&ved=2ahUKEwi5_M-vlK7eAhUFl4sKHWSZC6sQFjAAegQIBxAB&url=https%3A%2F%2Fdocs.djangoproject.com%2Fen%2F2.1%2Ftopics%2Fi18n%2Ftimezones%2F&usg=AOvVaw0s62Uw0Tjb4A2csvixC7GI# 
+Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
@@ -97,3 +98,4 @@ ENV/
 *.iml
 
 wanha-telegram-botti*
+db.sqlite3

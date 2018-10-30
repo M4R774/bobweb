@@ -2,7 +2,7 @@ import message_handler
 import data_handler
 import scheduled
 
-# seperately installed
+# separately installed
 import telepot
 import schedule
 
@@ -10,14 +10,24 @@ import sys
 import time
 import json
 import os
-from . web models import *
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
 
+# Django db imports
+import django
+# import v10consolidator.settings
 
-# Have to do this for it to work in 1.9.x!
-from django.core.wsgi import get_wsgi_application
-application = get_wsgi_application()
-#############
+sys.path.append('C:/Users/martt/OneDrive/Harrasteprojektit/bobweb\web')
+from halloffame.models import *
+
+# TODO: Figure out how the django db works
+# https://stackoverflow.com/questions/2180415/using-django-database-layer-outside-of-django
+
+# TODO: Test the database
+
+os.environ.setdefault(
+    "DJANGO_SETTINGS_MODULE",
+    "web.settings"
+)
+django.setup()
 
 def handle(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
