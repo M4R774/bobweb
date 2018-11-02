@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/2.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
-
 import os
 from django.conf import settings
 
@@ -32,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'halloffame.apps.HalloffameConfig',
+    'polls.apps.PollsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -73,19 +74,18 @@ WSGI_APPLICATION = 'web.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-settings.configure(
-    DATABASES={
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'bob_database',
-            'USER': 'admin',
-            'PASSWORD': 'admin',
-            'HOST': '127.0.0.1',
-            'PORT': '8001',
-        },
-    },
-    TIME_ZONE='Europe/Helsinki',
-)
+
+DATABASES={
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'bob_database',
+        'USER': 'admin',
+        'PASSWORD': 'admin',
+        'HOST': 'localhost',
+        'PORT': '8001',
+    }
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
