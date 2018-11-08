@@ -23,8 +23,9 @@ from halloffame.models import *
 # Adds the user to the db
 def update_user_db(msg):
     # Chat
-    chat = Chat(id=msg['chat']['id'],
-                title=msg['chat']['title'])
+    chat = Chat(id=msg['chat']['id'])
+    if int(msg['chat']['id']) < 0:
+        chat.title = msg['chat']['title']
     chat.save()
 
     # Telegram user
@@ -84,26 +85,20 @@ def bob_handler(msg, bot):
         if sender.rank < 56:
             sender.rank += 1
             up = u"\U0001F53C"
-            reply = "Elite! " + userid + " has been promoted to " + ranks[sender.rank] + "! " + up
+            reply = "Elite! " + userid + " has been promoted to " + \
+                    ranks[sender.rank] + "! " + up
             bot.sendMessage(bob_chat.id, reply)
         else:
             sender.rank = 0
             sender.prestige += 1
-    # failed leet
-    elif (msg['text'] == '1337' and \
-            bob_chat.latestLeet == date.today) \
-            or \
-            (int(time.strftime("%H")) == 13 and \
-            int(time.strftime("%M")) == 37 ):
-        # 33% chance for demotes
-        if randint(0, 2) == 0:
-            if sender.rank > 0:
-                sender.rank -= 1
-            down = u"\U0001F53D"
-            reply = "Rookie mistake! " + userid + " has been demoted to " + ranks[
-                chats[msg_chat_id]['users'][msg_from_id]['score']] + ". " + down
-            bot.sendMessage(msg_chat_id, reply)
-        chats[msg_chat_id]['mistakes'] += 1
+    # 33% chance for demotes
+    elif msg['text'] == '1337' and randint(0, 2) == 0:
+        if sender.rank > 0:
+            sender.rank -= 1
+        down = u"\U0001F53D"
+        reply = "Rookie mistake! " + userid + " has been demoted to " + \
+                ranks[sender.rank] + ". " + down
+        bot.sendMessage(bob_chat.id, reply)
 # ################ SAVE THE USER ########################
 
 
@@ -119,7 +114,7 @@ def msg_handler(msg, bot, settings_data):
     elif str(msg['chat']['id']) == settings_data['ministry_of_media_ID']:
         bob_handler(msg, bot)
 
-    if str(msg['from']['id']) == settings_data['dev_id']:
+    if str(msg['from']['id']) == settings_data['dev_ID']:
         debug_handler(msg, bot)
 
 

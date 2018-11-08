@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>1337</title>
+</head>
+<body>
+<ul>
+{% for chat in chats %}
+    <h1>{{ chat.title }}</h1>
+    <ul>
+    {% for tg_user in chat.members.all %}
+        <li>{{ tg_user }}</li>
+    {% endfor %}
+    </ul>
+{% endfor %}
+</ul>
+</body>
+</html>

@@ -3,22 +3,27 @@ from django.db import models
 # TODO: Remember to change the secret key from settings.py
 
 
+class TelegramUser(models.Model):
+    id = models.CharField(max_length=255, primary_key=True)
+    nickname = models.CharField(max_length=255, null=True)
+    firstName = models.CharField(max_length=255, null=True)
+    lastName = models.CharField(max_length=255, null=True)
+
+    def __str__(self):
+        return str(self.id)
+
+
 class Chat(models.Model):
     id = models.CharField(max_length=255, primary_key=True)
     title = models.CharField(max_length=255, null=True)
     latestLeet = models.DateTimeField(null=True)
     botUpTimeStart = models.DateTimeField(null=True)  # date since last reboot, used for up time calculations
     messageCount = models.PositiveIntegerField(default=0)
-
-    def __str__(self):
-        return str(self.id)
-
-
-class TelegramUser(models.Model):
-    id = models.CharField(max_length=255, primary_key=True)
-    nickname = models.CharField(max_length=255, null=True)
-    firstName = models.CharField(max_length=255, null=True)
-    lastName = models.CharField(max_length=255, null=True)
+    members = models.ManyToManyField(
+        TelegramUser,
+        through='ChatMember',
+        through_fields=('chat', 'tg_user'),
+    )
 
     def __str__(self):
         return str(self.id)
