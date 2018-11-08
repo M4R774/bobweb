@@ -10,7 +10,7 @@
     <h1>{{ chat.title }}</h1>
     <ul>
     {% for tg_user in chat.members.all %}
-        <li>{{ tg_user }}</li>
+        <li>{{ tg_user.nickname }}</li>
     {% endfor %}
     </ul>
 {% endfor %}

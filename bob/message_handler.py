@@ -31,11 +31,11 @@ def update_user_db(msg):
     # Telegram user
     mario = TelegramUser(id=str(msg['from']['id']))
     if 'first_name' in msg['from']:
-        mario.first_name = msg['from']['first_name']
+        mario.firstName = msg['from']['first_name']
     if 'last_name' in msg['from']:
-        mario.last_name = msg['from']['last_name']
+        mario.lastName = msg['from']['last_name']
     if 'username' in msg['from']:
-        mario.username = msg['from']['username']
+        mario.nickname = msg['from']['username']
     mario.save()
 
     # The relation between tg user and chat
