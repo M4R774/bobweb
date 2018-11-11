@@ -9,12 +9,13 @@
 {% for chat in chats %}
     <h1>{{ chat.title }}</h1>
     <ul>
-    {% for tg_user in chat.members.all %}
+    {% for chat_member in chat.chatmember_set.all %}
         <li>
-            <b>Nick:</b> {{ tg_user.nickname }},
-            <b>ID:</b> {{ tg_user.id }},
-            <b>First name:</b> {{ tg_user.firstName }},
-            <b>Last name:</b> {{ tg_user.lastName }}
+            <b>Nick:</b> {{ chat_member.chat.id }},
+            <b>ID:</b> {{ chat_member.tg_user.id }},
+            <b>First name:</b> {{ chat_member.tg_user.firstName }},
+            <b>Last name:</b> {{ chat_member.tg_user.lastName }}
+            <b>Rank:</b> {{ chat_member.rank }}
         </li>
     {% endfor %}
     </ul>

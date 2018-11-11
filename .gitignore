@@ -97,5 +97,7 @@ ENV/
 *.xml
 *.iml
 
+bob_database
+*migrations
 wanha-telegram-botti*
 db.sqlite3
