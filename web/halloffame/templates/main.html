@@ -11,7 +11,7 @@
     <ul>
     {% for chat_member in chat.chatmember_set.all %}
         <li>
-            <b>Nick:</b> {{ chat_member.chat.id }},
+            <b>Nick:</b> {{ chat_member.tg_user.nickname }},
             <b>ID:</b> {{ chat_member.tg_user.id }},
             <b>First name:</b> {{ chat_member.tg_user.firstName }},
             <b>Last name:</b> {{ chat_member.tg_user.lastName }}

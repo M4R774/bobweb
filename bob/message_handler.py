@@ -55,11 +55,11 @@ def debug_handler(msg, bot):
         sunglasses = u"\U0001F60E"
         reply = "I'm back! " + sunglasses + " #hype"
         bot.sendMessage(str(msg['chat']['id']), reply)
-
+    """
     if msg['text'] == "TelegramUser.objects.all()":
         reply = TelegramUser.objects.all()
         bot.sendMessage(str(msg['chat']['id']), str(reply))
-
+    """
     if msg['text'] == "ChatMember_test":
         sender = ChatMember.objects.get(chat=str(msg['chat']['id']),
                                         tg_user=str(msg['from']['id']))
@@ -109,6 +109,7 @@ def ministry_of_media_handler(msg, bot):
 
 
 def msg_handler(msg, bot, settings_data):
+    print('Received message: ' + str(msg))
     update_user_db(msg)
     if str(msg['chat']['id']) == settings_data['bob_ID']:
         bob_handler(msg, bot)
