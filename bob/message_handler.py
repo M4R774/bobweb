@@ -2,7 +2,7 @@ import data_handler
 
 from random import randint
 import time
-
+from datetime import date
 import sys
 import os
 sys.path.append('../web')  # needed for sibling import
@@ -76,30 +76,39 @@ def bob_handler(msg, bot):
     bob_chat = Chat.objects.get(id=str(msg['chat']['id']))
     sender = ChatMember.objects.get(chat=str(msg['chat']['id']),
                                     tg_user=str(msg['from']['id']))
-    if msg['text'] == '1337' and \
-            int(time.strftime("%H")) == 13 and \
-            int(time.strftime("%M")) == 37 and \
-            bob_chat.latestLeet != date.today():
-        bob_chat.latestLeet = date.today()
+    if msg['text'] == '1337':
+        print('[INFO] ' + time.strftime("%H:%M:%S") + ' Received 1337 message. ')
+        print('[INFO] ' + time.strftime("%H:%M:%S") + ' bob_chat.latestLeet: ' + str(bob_chat.latestLeet))
+        print('[INFO] ' + time.strftime("%H:%M:%S") + ' date.today(): ' + str(date.today()))
+        print('[INFO] ' + time.strftime("%H:%M:%S") + ' Sender rank before: ' + str(sender.rank))
         ranks = data_handler.read_ranks_file()
-
-        if sender.rank < 56:
-            sender.rank += 1
-            up = u"\U0001F53C"
-            reply = "Elite! " + userid + " has been promoted to " + \
-                    ranks[sender.rank] + "! " + up
+        if bob_chat.latestLeet != date.today() and \
+                int(time.strftime("%H")) == 13 and \
+                int(time.strftime("%M")) == 37:
+            print('[INFO] ' + time.strftime("%H:%M:%S") + ' Time and date correct! ')
+            bob_chat.latestLeet = date.today()
+            bob_chat.save()
+            if sender.rank < 56:
+                sender.rank += 1
+                up = u"\U0001F53C"
+                reply = "Elite! [TODO] has been promoted to " + \
+                        ranks[sender.rank] + "! " + up
+                # bot.sendMessage(bob_chat.id, reply)
+            else:
+                sender.rank = 0
+                sender.prestige += 1
+        # 33% chance for demotes
+        elif randint(0, 2) == 0:
+            print('[INFO] ' + time.strftime("%H:%M:%S") + ' Incorrect time, removing points. ')
+            if sender.rank > 0:
+                sender.rank -= 1
+            down = u"\U0001F53D"
+            reply = "Rookie mistake! [TODO] has been demoted to " + \
+                    ranks[sender.rank] + ". " + down
             # bot.sendMessage(bob_chat.id, reply)
         else:
-            sender.rank = 0
-            sender.prestige += 1
-    # 33% chance for demotes
-    elif msg['text'] == '1337' and randint(0, 2) == 0:
-        if sender.rank > 0:
-            sender.rank -= 1
-        down = u"\U0001F53D"
-        reply = "Rookie mistake! " + userid + " has been demoted to " + \
-                ranks[sender.rank] + ". " + down
-        # bot.sendMessage(bob_chat.id, reply)
+            print('[INFO] ' + time.strftime("%H:%M:%S") + ' Incorrect time, but the user got lucky. ')
+        print('[INFO] ' + time.strftime("%H:%M:%S") + ' Sender rank after: ' + str(sender.rank))
     sender.save()
 
 
@@ -109,7 +118,7 @@ def ministry_of_media_handler(msg, bot):
 
 
 def msg_handler(msg, bot, settings_data):
-    print('Received message: ' + str(msg))
+    # print('Received message. ' + str(msg))
     update_user_db(msg)
     if str(msg['chat']['id']) == settings_data['bob_ID']:
         bob_handler(msg, bot)
