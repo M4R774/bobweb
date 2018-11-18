@@ -78,14 +78,14 @@ def bob_handler(msg, bot):
                                     tg_user=str(msg['from']['id']))
     if msg['text'] == '1337':
         print('[INFO] ' + time.strftime("%H:%M:%S") + ' Received 1337 message. ')
-        print('[INFO] ' + time.strftime("%H:%M:%S") + ' bob_chat.latestLeet: ' + str(bob_chat.latestLeet))
-        print('[INFO] ' + time.strftime("%H:%M:%S") + ' date.today(): ' + str(date.today()))
-        print('[INFO] ' + time.strftime("%H:%M:%S") + ' Sender rank before: ' + str(sender.rank))
+        print('[----] ' + time.strftime("%H:%M:%S") + ' bob_chat.latestLeet: ' + str(bob_chat.latestLeet))
+        print('[----] ' + time.strftime("%H:%M:%S") + ' date.today(): ' + str(date.today()))
+        print('[----] ' + time.strftime("%H:%M:%S") + ' Sender rank before: ' + str(sender.rank))
         ranks = data_handler.read_ranks_file()
         if bob_chat.latestLeet != date.today() and \
                 int(time.strftime("%H")) == 13 and \
                 int(time.strftime("%M")) == 37:
-            print('[INFO] ' + time.strftime("%H:%M:%S") + ' Time and date correct! ')
+            print('[----] ' + time.strftime("%H:%M:%S") + ' Time and date correct! ')
             bob_chat.latestLeet = date.today()
             bob_chat.save()
             if sender.rank < 56:
@@ -99,7 +99,7 @@ def bob_handler(msg, bot):
                 sender.prestige += 1
         # 33% chance for demotes
         elif randint(0, 2) == 0:
-            print('[INFO] ' + time.strftime("%H:%M:%S") + ' Incorrect time, removing points. ')
+            print('[----] ' + time.strftime("%H:%M:%S") + ' Incorrect time, removing points. ')
             if sender.rank > 0:
                 sender.rank -= 1
             down = u"\U0001F53D"
@@ -107,8 +107,8 @@ def bob_handler(msg, bot):
                     ranks[sender.rank] + ". " + down
             # bot.sendMessage(bob_chat.id, reply)
         else:
-            print('[INFO] ' + time.strftime("%H:%M:%S") + ' Incorrect time, but the user got lucky. ')
-        print('[INFO] ' + time.strftime("%H:%M:%S") + ' Sender rank after: ' + str(sender.rank))
+            print('[----] ' + time.strftime("%H:%M:%S") + ' Incorrect time, but the user got lucky. ')
+        print('[-END] ' + time.strftime("%H:%M:%S") + ' Sender rank after: ' + str(sender.rank))
     sender.save()
 
 
@@ -120,7 +120,7 @@ def ministry_of_media_handler(msg, bot):
 def msg_handler(msg, bot, settings_data):
     # print('Received message. ' + str(msg))
     update_user_db(msg)
-    if str(msg['chat']['id']) == settings_data['bob_ID']:
+    if True: # str(msg['chat']['id']) == settings_data['bob_ID']:
         bob_handler(msg, bot)
     elif str(msg['chat']['id']) == settings_data['ministry_of_media_ID']:
         bob_handler(msg, bot)

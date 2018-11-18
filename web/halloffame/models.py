@@ -24,6 +24,8 @@ class Chat(models.Model):
         through='ChatMember',
         through_fields=('chat', 'tg_user'),
     )
+    # TODO: Add fields "feature_x_enabled", for example leetEnable, for enabling
+    # and disabling leet counting for each chat seperately.
 
     def __str__(self):
         return str(self.id)
