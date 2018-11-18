@@ -1,6 +1,7 @@
 import data_handler
-
+import re
 from random import randint
+import random
 import time
 from datetime import date
 import sys
@@ -119,8 +120,15 @@ def bob_handler(msg, bot):
     sender.save()
 
 
-def ministry_of_media_handler(msg, bot):
-    # Paskapostausfeatureita tänne
+def spammer(msg, bot):
+    # Shitposting features here
+
+    # If string "_* vai _*" is found, make split and post random
+    if re.search(r'..*\svai\s..*', msg['text']) is not None:
+        options = re.split(r'\svai\s', msg['text'])
+        reply = (random.choice(options))
+        print('[SEND] ' + time.strftime("%H:%M:%S") + reply)
+        # bot.sendMessage(bob_chat.id, reply)
     pass
 
 
@@ -130,8 +138,8 @@ def msg_handler(msg, bot, settings_data):
     if True: # str(msg['chat']['id']) == settings_data['bob_ID']:
         bob_handler(msg, bot)
 
-    if str(msg['chat']['id']) == settings_data['ministry_of_media_ID']:
-        bob_handler(msg, bot)
+    if str(msg['chat']['id']) != settings_data['bob_ID']:
+        spammer(msg, bot)
 
     if str(msg['from']['id']) == settings_data['dev_ID']:
         debug_handler(msg, bot)
