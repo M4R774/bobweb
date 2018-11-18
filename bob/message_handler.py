@@ -71,43 +71,61 @@ def debug_handler(msg, bot):
     pass
 
 
-# TODO: Solve the userid problem ASAP
+def user_name_string(user):
+    if user.nickname is not None:
+        return str(user.nickname)
+    elif user.lastName is not None:
+        return str(user.lastName)
+    elif user.firstName is not None:
+        return str(user.firstName)
+    else:
+        return str(user.id)
+
+
 def bob_handler(msg, bot):
     bob_chat = Chat.objects.get(id=str(msg['chat']['id']))
     sender = ChatMember.objects.get(chat=str(msg['chat']['id']),
                                     tg_user=str(msg['from']['id']))
     if msg['text'] == '1337':
         print('[INFO] ' + time.strftime("%H:%M:%S") + ' Received 1337 message. ')
-        print('[----] ' + time.strftime("%H:%M:%S") + ' bob_chat.latestLeet: ' + str(bob_chat.latestLeet))
-        print('[----] ' + time.strftime("%H:%M:%S") + ' date.today(): ' + str(date.today()))
-        print('[----] ' + time.strftime("%H:%M:%S") + ' Sender rank before: ' + str(sender.rank))
+        print('[INFO] ' + time.strftime("%H:%M:%S") + ' bob_chat.latestLeet: ' + str(bob_chat.latestLeet))
+        print('[INFO] ' + time.strftime("%H:%M:%S") + ' date.today(): ' + str(date.today()))
+        print('[INFO] ' + time.strftime("%H:%M:%S") + ' Sender rank before: ' + str(sender.rank))
         ranks = data_handler.read_ranks_file()
         if bob_chat.latestLeet != date.today() and \
                 int(time.strftime("%H")) == 13 and \
                 int(time.strftime("%M")) == 37:
-            print('[----] ' + time.strftime("%H:%M:%S") + ' Time and date correct! ')
+            print('[INFO] ' + time.strftime("%H:%M:%S") + ' Time and date correct! ')
             bob_chat.latestLeet = date.today()
             bob_chat.save()
-            if sender.rank < 56:
+            if sender.rank <= len(ranks):
                 sender.rank += 1
                 up = u"\U0001F53C"
-                reply = "Elite! [TODO] has been promoted to " + \
-                        ranks[sender.rank] + "! " + up
-                # bot.sendMessage(bob_chat.id, reply)
+                reply = "Asento! " + user_name_string(sender) + " ansaitsi ylennyksen arvoon " + \
+                        ranks[sender.rank] + "! " + up + " Lepo. "
             else:
-                sender.rank = 0
                 sender.prestige += 1
+                reply = "Asento! " + user_name_string(sender) + \
+                        " on saavuttanut jo korkeimman mahdollisen sotilasarvon " + \
+                        ranks[sender.rank] + "! Näin ollen " + user_name_string(sender) + \
+                        " lähtee uudelle kierrokselle. Onneksi olkoon! " + \
+                        "Juuri päättynyt kierros oli hänen " + str(sender.rank) + ". Lepo. "
+                sender.rank = 0
+            print('[SEND] ' + time.strftime("%H:%M:%S") + reply)
+            # bot.sendMessage(bob_chat.id, reply)
+
         # 33% chance for demotes
         elif randint(0, 2) == 0:
-            print('[----] ' + time.strftime("%H:%M:%S") + ' Incorrect time, removing points. ')
+            print('[INFO] ' + time.strftime("%H:%M:%S") + ' Incorrect time, removing points. ')
             if sender.rank > 0:
                 sender.rank -= 1
             down = u"\U0001F53D"
-            reply = "Rookie mistake! [TODO] has been demoted to " + \
+            reply = "Alokasvirhe! " + user_name_string() + " alennettiin arvoon " + \
                     ranks[sender.rank] + ". " + down
+            print('[SEND] ' + time.strftime("%H:%M:%S") + reply)
             # bot.sendMessage(bob_chat.id, reply)
         else:
-            print('[----] ' + time.strftime("%H:%M:%S") + ' Incorrect time, but the user got lucky. ')
+            print('[INFO] ' + time.strftime("%H:%M:%S") + ' Incorrect time, but the user got lucky. ')
         print('[-END] ' + time.strftime("%H:%M:%S") + ' Sender rank after: ' + str(sender.rank))
     sender.save()
 
@@ -122,7 +140,8 @@ def msg_handler(msg, bot, settings_data):
     update_user_db(msg)
     if True: # str(msg['chat']['id']) == settings_data['bob_ID']:
         bob_handler(msg, bot)
-    elif str(msg['chat']['id']) == settings_data['ministry_of_media_ID']:
+
+    if str(msg['chat']['id']) == settings_data['ministry_of_media_ID']:
         bob_handler(msg, bot)
 
     if str(msg['from']['id']) == settings_data['dev_ID']:
