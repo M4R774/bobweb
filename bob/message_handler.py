@@ -102,7 +102,7 @@ def bob_handler(msg, bot):
                         "Juuri päättynyt kierros oli hänen " + str(sender.prestige) + ". Lepo. "
                 sender.rank = 0
             print('[SEND] ' + time.strftime("%H:%M:%S") + reply)
-            # bot.sendMessage(bob_chat.id, reply)
+            # bot.sendMessage(msg['from']['id'], reply)
 
         # 33% chance for demotes
         elif randint(0, 2) == 0:
@@ -113,7 +113,7 @@ def bob_handler(msg, bot):
             reply = "Alokasvirhe! " + sender.tg_user + " alennettiin arvoon " + \
                     ranks[sender.rank] + ". " + down
             print('[SEND] ' + time.strftime("%H:%M:%S") + reply)
-            # bot.sendMessage(bob_chat.id, reply)
+            # bot.sendMessage(msg['from']['id'], reply)
         else:
             print('[INFO] ' + time.strftime("%H:%M:%S") + ' Incorrect time, but the user got lucky. ')
         print('[-END] ' + time.strftime("%H:%M:%S") + ' Sender rank after: ' + str(sender.rank))
@@ -127,8 +127,8 @@ def spammer(msg, bot):
     if re.search(r'..*\svai\s..*', msg['text']) is not None:
         options = re.split(r'\svai\s', msg['text'])
         reply = (random.choice(options))
-        print('[SEND] ' + time.strftime("%H:%M:%S") + reply)
-        # bot.sendMessage(bob_chat.id, reply)
+        print('[SEND] ' + time.strftime("%H:%M:%S") + " " + reply)
+        bot.sendMessage(msg['from']['id'], reply)
     pass
 
 
