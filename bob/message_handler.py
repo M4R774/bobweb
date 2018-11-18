@@ -128,7 +128,7 @@ def spammer(msg, bot):
         options = re.split(r'\svai\s', msg['text'])
         reply = (random.choice(options))
         print('[SEND] ' + time.strftime("%H:%M:%S") + " " + reply)
-        bot.sendMessage(msg['from']['id'], reply)
+        bot.sendMessage(msg['chat']['id'], reply)
     pass
 
 
