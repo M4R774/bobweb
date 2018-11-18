@@ -7,15 +7,13 @@
 <body>
 <ul>
 {% for chat in chats %}
-    <h1>{{ chat.title }}</h1>
+    <h1>{{ chat.title }}: {{ chat.id }}</h1>
     <ul>
     {% for chat_member in chat.chatmember_set.all %}
         <li>
-            <b>Nick:</b> {{ chat_member.tg_user.nickname }},
-            <b>ID:</b> {{ chat_member.tg_user.id }},
-            <b>First name:</b> {{ chat_member.tg_user.firstName }},
-            <b>Last name:</b> {{ chat_member.tg_user.lastName }}
-            <b>Rank:</b> {{ chat_member.rank }}
+            <b>Taistelija:</b> {{ chat_member.tg_user}},
+            <b>Sotilasarvo:</b> {{ chat_member.rank }},
+            <b>Kierrokset:</b> {{ chat_member.prestige }}
         </li>
     {% endfor %}
     </ul>

@@ -10,7 +10,14 @@ class TelegramUser(models.Model):
     lastName = models.CharField(max_length=255, null=True)
 
     def __str__(self):
-        return str(self.id)
+        if self.nickname is not None:
+            return str(self.nickname)
+        elif self.lastName is not None:
+            return str(self.lastName)
+        elif self.firstName is not None:
+            return str(self.firstName)
+        else:
+            return str(self.id)
 
 
 class Chat(models.Model):
@@ -41,6 +48,7 @@ class ChatMember(models.Model):
 
     class Meta:
         unique_together = ("chat", "tg_user")
+        ordering = ['-rank', '-prestige']
 
     def __str__(self):
         return str(self.rank)

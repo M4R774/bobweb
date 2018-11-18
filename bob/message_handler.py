@@ -71,17 +71,6 @@ def debug_handler(msg, bot):
     pass
 
 
-def user_name_string(user):
-    if user.nickname is not None:
-        return str(user.nickname)
-    elif user.lastName is not None:
-        return str(user.lastName)
-    elif user.firstName is not None:
-        return str(user.firstName)
-    else:
-        return str(user.id)
-
-
 def bob_handler(msg, bot):
     bob_chat = Chat.objects.get(id=str(msg['chat']['id']))
     sender = ChatMember.objects.get(chat=str(msg['chat']['id']),
@@ -101,15 +90,15 @@ def bob_handler(msg, bot):
             if sender.rank <= len(ranks):
                 sender.rank += 1
                 up = u"\U0001F53C"
-                reply = "Asento! " + user_name_string(sender) + " ansaitsi ylennyksen arvoon " + \
+                reply = "Asento! " + sender.tg_user + " ansaitsi ylennyksen arvoon " + \
                         ranks[sender.rank] + "! " + up + " Lepo. "
             else:
                 sender.prestige += 1
-                reply = "Asento! " + user_name_string(sender) + \
+                reply = "Asento! " + sender.tg_user + \
                         " on saavuttanut jo korkeimman mahdollisen sotilasarvon " + \
-                        ranks[sender.rank] + "! Näin ollen " + user_name_string(sender) + \
+                        ranks[sender.rank] + "! Näin ollen " + sender.tg_user + \
                         " lähtee uudelle kierrokselle. Onneksi olkoon! " + \
-                        "Juuri päättynyt kierros oli hänen " + str(sender.rank) + ". Lepo. "
+                        "Juuri päättynyt kierros oli hänen " + str(sender.prestige) + ". Lepo. "
                 sender.rank = 0
             print('[SEND] ' + time.strftime("%H:%M:%S") + reply)
             # bot.sendMessage(bob_chat.id, reply)
@@ -120,7 +109,7 @@ def bob_handler(msg, bot):
             if sender.rank > 0:
                 sender.rank -= 1
             down = u"\U0001F53D"
-            reply = "Alokasvirhe! " + user_name_string() + " alennettiin arvoon " + \
+            reply = "Alokasvirhe! " + sender.tg_user + " alennettiin arvoon " + \
                     ranks[sender.rank] + ". " + down
             print('[SEND] ' + time.strftime("%H:%M:%S") + reply)
             # bot.sendMessage(bob_chat.id, reply)
