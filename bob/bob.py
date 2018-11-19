@@ -1,25 +1,16 @@
 import message_handler
 import data_handler
 import scheduled
-
-# separately installed
-import telepot
 import schedule
-
-import sys
+import telepot
 import time
 import json
+import sys
 import os
-# How to use the django db from the bob:
-# https://stackoverflow.com/questions/2180415/using-django-database-layer-outside-of-django
 
-# TODO: Test the database
-# TODO: Fix absolute paths
-# TODO: Think solution for duplicate database problem
-#   - Database only in bob folder?
-#       - Need to change the django db folder
-#   - Bot uses the database folder from the django folder
-#       - Lets do this! How?
+# TODO: Facelift for bobweb
+# TODO: After successfull
+
 settings_data = {}
 
 

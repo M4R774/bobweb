@@ -91,18 +91,18 @@ def bob_handler(msg, bot):
             if sender.rank <= len(ranks):
                 sender.rank += 1
                 up = u"\U0001F53C"
-                reply = "Asento! " + sender.tg_user + " ansaitsi ylennyksen arvoon " + \
+                reply = "Asento! " + str(sender.tg_user) + " ansaitsi ylennyksen arvoon " + \
                         ranks[sender.rank] + "! " + up + " Lepo. "
             else:
                 sender.prestige += 1
-                reply = "Asento! " + sender.tg_user + \
+                reply = "Asento! " + str(sender.tg_user) + \
                         " on saavuttanut jo korkeimman mahdollisen sotilasarvon " + \
-                        ranks[sender.rank] + "! Näin ollen " + sender.tg_user + \
+                        ranks[sender.rank] + "! Näin ollen " + str(sender.tg_user) + \
                         " lähtee uudelle kierrokselle. Onneksi olkoon! " + \
                         "Juuri päättynyt kierros oli hänen " + str(sender.prestige) + ". Lepo. "
                 sender.rank = 0
             print('[SEND] ' + time.strftime("%H:%M:%S") + reply)
-            # bot.sendMessage(msg['from']['id'], reply)
+            # bot.sendMessage(msg['chat']['id'], reply)
 
         # 33% chance for demotes
         elif randint(0, 2) == 0:
@@ -110,10 +110,10 @@ def bob_handler(msg, bot):
             if sender.rank > 0:
                 sender.rank -= 1
             down = u"\U0001F53D"
-            reply = "Alokasvirhe! " + sender.tg_user + " alennettiin arvoon " + \
+            reply = "Alokasvirhe! " + str(sender.tg_user) + " alennettiin arvoon " + \
                     ranks[sender.rank] + ". " + down
             print('[SEND] ' + time.strftime("%H:%M:%S") + reply)
-            # bot.sendMessage(msg['from']['id'], reply)
+            # bot.sendMessage(msg['chat']['id'], reply)
         else:
             print('[INFO] ' + time.strftime("%H:%M:%S") + ' Incorrect time, but the user got lucky. ')
         print('[-END] ' + time.strftime("%H:%M:%S") + ' Sender rank after: ' + str(sender.rank))
@@ -129,7 +129,10 @@ def spammer(msg, bot):
         reply = (random.choice(options))
         print('[SEND] ' + time.strftime("%H:%M:%S") + " " + reply)
         bot.sendMessage(msg['chat']['id'], reply)
-    pass
+
+    # TODO: Viisaus (proverb feature)
+    # viisaus: post random proverb
+    # uusi viisaus: parempi pyy pivossa kuin 10 oksalla
 
 
 def msg_handler(msg, bot, settings_data):

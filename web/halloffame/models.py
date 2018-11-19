@@ -1,6 +1,7 @@
 from django.db import models
 
 # TODO: Remember to change the secret key from settings.py
+# TODO: lisää viisaus ominaisuus
 
 
 class TelegramUser(models.Model):
