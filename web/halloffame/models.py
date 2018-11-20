@@ -63,3 +63,12 @@ class ChatMember(models.Model):
         f = open('ranks.txt')
         lines = f.readlines()
         return str(lines[self.rank])
+
+
+# Viisaus
+class Proverb(models.Model):
+    proverb = models.TextField()
+    author = models.ForeignKey('TelegramUser', null=True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.proverb)

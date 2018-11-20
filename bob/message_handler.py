@@ -118,14 +118,20 @@ def bob_handler(msg, bot):
         else:
             print('[INFO] ' + time.strftime("%H:%M:%S") + ' Incorrect time, but the user got lucky. ')
         print('[-END] ' + time.strftime("%H:%M:%S") + ' Sender rank after: ' + str(sender.rank))
-    sender.save()
+        sender.save()
 
 
+# Shitposting features here
 def spammer(msg, bot):
-    # Shitposting features here
 
+    # Post random proverb
+    if msg['text'] == 'Viisaus':
+        pass
+    # Add new proverb
+    elif msg['text'] == 'Uusi viisaus: ':
+        pass
     # If string "_* vai _*" is found, make split and post random
-    if re.search(r'..*\svai\s..*', msg['text']) is not None:
+    elif re.search(r'..*\svai\s..*', msg['text']) is not None:
         options = re.split(r'\svai\s', msg['text'])
         reply = (random.choice(options))
         print('[SEND] ' + time.strftime("%H:%M:%S") + " " + reply)
