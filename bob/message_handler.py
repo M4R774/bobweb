@@ -7,6 +7,7 @@ from datetime import date
 import sys
 import os
 from django.utils import timezone
+from django.db.models import Max
 sys.path.append('../web')  # needed for sibling import
 import django
 os.environ.setdefault(
