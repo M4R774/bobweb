@@ -53,7 +53,7 @@ class ChatMember(models.Model):
 
     class Meta:
         unique_together = ("chat", "tg_user")
-        ordering = ['-rank', '-prestige']
+        ordering = ['-_rank', '-prestige']
 
     def __str__(self):
         return str(self.rank)
