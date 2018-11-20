@@ -121,25 +121,33 @@ def bob_handler(msg, bot):
         sender.save()
 
 
+def random_proverb():
+    max_id = Proverb.objects.all().aggregate(max_id=Max("id"))['max_id']
+    for i in range(0, 100):
+        pk = random.randint(1, max_id)
+        proverb = Proverb.objects.filter(pk=pk).first()
+        if proverb:
+            return str(proverb)
+    # If it takes over 100 tries, return empty
+    return 'En löytänyt tietokannastani uumenista viisauksia :-('
+
+
 # Shitposting features here
 def spammer(msg, bot):
-
     # Post random proverb
-    if msg['text'] == 'Viisaus':
-        pass
+    if msg['text'].lower() == 'viisaus':
+        reply = random_proverb()
+        bot.sendMessage(msg['chat']['id'], reply)
     # Add new proverb
-    elif msg['text'] == 'Uusi viisaus: ':
-        pass
+    elif re.IGNORECASE.search(r'^uusi viisaus: ', msg['text']) is not None:
+        proverb = Proverb(proverb=msg['text'][14:])
+        proverb.save()
     # If string "_* vai _*" is found, make split and post random
     elif re.search(r'..*\svai\s..*', msg['text']) is not None:
         options = re.split(r'\svai\s', msg['text'])
         reply = (random.choice(options))
         print('[SEND] ' + time.strftime("%H:%M:%S") + " " + reply)
         bot.sendMessage(msg['chat']['id'], reply)
-
-    # TODO: Viisaus (proverb feature)
-    # viisaus: post random proverb
-    # uusi viisaus: parempi pyy pivossa kuin 10 oksalla
 
 
 def msg_handler(msg, bot, settings_data):
