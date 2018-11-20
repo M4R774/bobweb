@@ -143,6 +143,8 @@ def spammer(msg, bot):
     elif re.search(r'^uusi viisaus: ', msg['text'], re.IGNORECASE) is not None:
         proverb = Proverb(proverb=msg['text'][14:])
         proverb.save()
+        reply = 'Viisaus tallennettu. '
+        bot.sendMessage(msg['chat']['id'], reply)
     # If string "_* vai _*" is found, make split and post random
     elif re.search(r'..*\svai\s..*', msg['text']) is not None:
         options = re.split(r'\svai\s', msg['text'])
