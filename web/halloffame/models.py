@@ -49,7 +49,7 @@ class ChatMember(models.Model):
 
     @property
     def rank(self):
-        return self.rank_
+        return self._rank
 
     class Meta:
         unique_together = ("chat", "tg_user")
