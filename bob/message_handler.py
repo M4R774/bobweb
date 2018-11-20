@@ -89,30 +89,30 @@ def bob_handler(msg, bot):
             print('[INFO] ' + time.strftime("%H:%M:%S") + ' Time and date correct! ')
             bob_chat.latestLeet = timezone.localtime(timezone.now())
             bob_chat.save()
-            if sender.rank <= len(ranks):
-                sender.rank += 1
+            if sender._rank <= len(ranks):
+                sender._rank += 1
                 up = u"\U0001F53C"
                 reply = "Asento! " + str(sender.tg_user) + " ansaitsi ylennyksen arvoon " + \
-                        ranks[sender.rank] + "! " + up + " Lepo. "
+                        ranks[sender._rank] + "! " + up + " Lepo. "
             else:
                 sender.prestige += 1
                 reply = "Asento! " + str(sender.tg_user) + \
                         " on saavuttanut jo korkeimman mahdollisen sotilasarvon " + \
-                        ranks[sender.rank] + "! Näin ollen " + str(sender.tg_user) + \
+                        ranks[sender._rank] + "! Näin ollen " + str(sender.tg_user) + \
                         " lähtee uudelle kierrokselle. Onneksi olkoon! " + \
                         "Juuri päättynyt kierros oli hänen " + str(sender.prestige) + ". Lepo. "
-                sender.rank = 0
+                sender._rank = 0
             print('[SEND] ' + time.strftime("%H:%M:%S") + " " + reply)
             # bot.sendMessage(msg['chat']['id'], reply)
 
         # 33% chance for demotes
         elif randint(0, 2) == 0:
             print('[INFO] ' + time.strftime("%H:%M:%S") + ' Incorrect time, removing points. ')
-            if sender.rank > 0:
-                sender.rank -= 1
+            if sender._rank > 0:
+                sender._rank -= 1
             down = u"\U0001F53D"
             reply = "Alokasvirhe! " + str(sender.tg_user) + " alennettiin arvoon " + \
-                    ranks[sender.rank] + ". " + down
+                    ranks[sender._rank] + ". " + down
             print('[SEND] ' + time.strftime("%H:%M:%S") + reply)
             # bot.sendMessage(msg['chat']['id'], reply)
         else:
@@ -129,7 +129,7 @@ def random_proverb():
         if proverb:
             return str(proverb)
     # If it takes over 100 tries, return empty
-    return 'En löytänyt tietokannastani uumenista viisauksia :-('
+    return 'En löytänyt tietokantani uumenista viisauksia :-('
 
 
 # Shitposting features here
