@@ -25,7 +25,7 @@
     {% for chat_member in chat.chatmember_set.all %}
         <tr>
             <td>{{ chat_member.tg_user}}</td>
-            <td>{{ chat_member.rank }}</td>
+            <td>{{ chat_member.rank_str }}</td>
             <td>{{ chat_member.prestige }}</td>
        </tr>
     {% endfor %}

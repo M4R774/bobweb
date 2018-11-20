@@ -15,6 +15,7 @@ import os
 # TODO: Invent more dank features
 # TODO: weather?
 
+
 settings_data = {}
 
 

@@ -102,7 +102,7 @@ def bob_handler(msg, bot):
                         " lähtee uudelle kierrokselle. Onneksi olkoon! " + \
                         "Juuri päättynyt kierros oli hänen " + str(sender.prestige) + ". Lepo. "
                 sender.rank = 0
-            print('[SEND] ' + time.strftime("%H:%M:%S") + reply)
+            print('[SEND] ' + time.strftime("%H:%M:%S") + " " + reply)
             # bot.sendMessage(msg['chat']['id'], reply)
 
         # 33% chance for demotes

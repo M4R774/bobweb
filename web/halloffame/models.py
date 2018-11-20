@@ -45,7 +45,11 @@ class ChatMember(models.Model):
     tg_user = models.ForeignKey('TelegramUser', null=False, on_delete=models.CASCADE)
     # is there a way to restrict that only one instanse of a user/chat?
     prestige = models.PositiveIntegerField(default=0)
-    rank = models.PositiveIntegerField(default=0)
+    _rank = models.PositiveIntegerField(default=0)
+
+    @property
+    def rank(self):
+        return self.rank
 
     class Meta:
         unique_together = ("chat", "tg_user")
@@ -53,3 +57,9 @@ class ChatMember(models.Model):
 
     def __str__(self):
         return str(self.rank)
+
+    # TODO: Return the rank as string
+    def rank_str(self):
+        f = open('ranks.txt')
+        lines = f.readlines()
+        return str(lines[self.rank])
