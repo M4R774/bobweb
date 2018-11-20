@@ -58,6 +58,9 @@ def debug_handler(msg, bot):
     if msg['text'] == "TelegramUser.objects.all()":
         reply = TelegramUser.objects.all()
         bot.sendMessage(str(msg['chat']['id']), str(reply))
+    if msg['text'] == 'timezone.now()':
+        reply = str(timezone.now())
+        bot.sendMessage(str(msg['chat']['id']), str(reply))
     """
     if msg['text'] == "ChatMember_test":
         sender = ChatMember.objects.get(chat=str(msg['chat']['id']),
