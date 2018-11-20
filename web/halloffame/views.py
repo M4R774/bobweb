@@ -6,6 +6,6 @@ from django.http import HttpResponse
 
 
 def index(request):
-    # company = get_object_or_404(Company, pk=company_id)
-    chats = Chat.objects.all()
-    return render(request, 'main.html', {'chats': chats})
+    # TODO: Make this id to come from the settings.json
+    chat = Chat.objects.get(id='-1001088846469')
+    return render(request, 'main.html', {'chat': chat})

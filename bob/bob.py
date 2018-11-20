@@ -9,7 +9,11 @@ import sys
 import os
 
 # TODO: Facelift for bobweb
-# TODO: After successfull
+# TODO: After successfull leet, uncomment message sending
+# TODO: Viisaus
+# TODO: xkcd spammer, random or latest?
+# TODO: Invent more dank features
+# TODO: weather?
 
 settings_data = {}
 

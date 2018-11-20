@@ -6,6 +6,7 @@ import time
 from datetime import date
 import sys
 import os
+from django.utils import timezone
 sys.path.append('../web')  # needed for sibling import
 import django
 os.environ.setdefault(
@@ -15,9 +16,6 @@ os.environ.setdefault(
 from django.conf import settings
 django.setup()
 from halloffame.models import *
-
-# TODO tee assign_name funktiosta fiksumpi
-# TODO nimet järjestykseen
 
 
 # Adds the user to the db
@@ -86,7 +84,7 @@ def bob_handler(msg, bot):
                 int(time.strftime("%H")) == 13 and \
                 int(time.strftime("%M")) == 37:
             print('[INFO] ' + time.strftime("%H:%M:%S") + ' Time and date correct! ')
-            bob_chat.latestLeet = date.today()
+            bob_chat.latestLeet = timezone.now()
             bob_chat.save()
             if sender.rank <= len(ranks):
                 sender.rank += 1
