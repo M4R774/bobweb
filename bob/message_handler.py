@@ -58,8 +58,8 @@ def debug_handler(msg, bot):
     if msg['text'] == "TelegramUser.objects.all()":
         reply = TelegramUser.objects.all()
         bot.sendMessage(str(msg['chat']['id']), str(reply))
-    if msg['text'] == 'timezone.now()':
-        reply = str(timezone.now())
+    if msg['text'] == 'timezone.localtime(timezone.now())':
+        reply = str(timezone.localtime(timezone.now()))
         bot.sendMessage(str(msg['chat']['id']), str(reply))
     """
     if msg['text'] == "ChatMember_test":
@@ -87,7 +87,7 @@ def bob_handler(msg, bot):
                 int(time.strftime("%H")) == 13 and \
                 int(time.strftime("%M")) == 37:
             print('[INFO] ' + time.strftime("%H:%M:%S") + ' Time and date correct! ')
-            bob_chat.latestLeet = timezone.now()
+            bob_chat.latestLeet = timezone.localtime(timezone.now())
             bob_chat.save()
             if sender.rank <= len(ranks):
                 sender.rank += 1
