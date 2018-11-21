@@ -21,7 +21,6 @@ from halloffame.models import *
 
 # Adds the user to the db
 def update_user_db(msg):
-    # Chat
     # Check if the chat exists alredy or not:
     if Chat.objects.filter(id=msg['chat']['id']).count() > 0:
         pass
@@ -88,9 +87,9 @@ def bob_handler(msg, bot):
         print('[INFO] ' + time.strftime("%H:%M:%S") + ' date.today(): ' + str(date.today()))
         print('[INFO] ' + time.strftime("%H:%M:%S") + ' Sender rank before: ' + str(sender.rank))
         ranks = data_handler.read_ranks_file()
-        if bob_chat.latestLeet != date.today(): # and \
-                #int(time.strftime("%H")) == 13 and \
-                #int(time.strftime("%M")) == 37:
+        if bob_chat.latestLeet != date.today() and \
+                int(time.strftime("%H")) == 13 and \
+                int(time.strftime("%M")) == 37:
             print('[INFO] ' + time.strftime("%H:%M:%S") + ' Time and date correct! ')
             bob_chat.latestLeet = date.today()
             bob_chat.save()
@@ -108,7 +107,7 @@ def bob_handler(msg, bot):
                         "Juuri päättynyt kierros oli hänen " + str(sender.prestige) + ". Lepo. "
                 sender._rank = 0
             print('[SEND] ' + time.strftime("%H:%M:%S") + " " + reply)
-            # bot.sendMessage(msg['chat']['id'], reply)
+            bot.sendMessage(msg['chat']['id'], reply)
 
         # 33% chance for demotes
         elif randint(0, 2) == 0:
@@ -118,8 +117,8 @@ def bob_handler(msg, bot):
             down = u"\U0001F53D"
             reply = "Alokasvirhe! " + str(sender.tg_user) + " alennettiin arvoon " + \
                     ranks[sender._rank] + ". " + down
-            print('[SEND] ' + time.strftime("%H:%M:%S") + reply)
-            # bot.sendMessage(msg['chat']['id'], reply)
+            print('[SEND] ' + time.strftime("%H:%M:%S") + ' ' + reply)
+            bot.sendMessage(msg['chat']['id'], reply)
         else:
             print('[INFO] ' + time.strftime("%H:%M:%S") + ' Incorrect time, but the user got lucky. ')
         print('[-END] ' + time.strftime("%H:%M:%S") + ' Sender rank after: ' + str(sender.rank))
