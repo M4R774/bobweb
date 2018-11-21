@@ -22,10 +22,14 @@ from halloffame.models import *
 # Adds the user to the db
 def update_user_db(msg):
     # Chat
-    chat = Chat(id=msg['chat']['id'])
-    if int(msg['chat']['id']) < 0:
-        chat.title = msg['chat']['title']
-    chat.save()
+    # Check if the chat exists alredy or not:
+    if Chat.objects.filter(id=msg['chat']['id']).count() > 0:
+        pass
+    else:
+        chat = Chat(id=msg['chat']['id'])
+        if int(msg['chat']['id']) < 0:
+            chat.title = msg['chat']['title']
+        chat.save()
 
     # Telegram user
     mario = TelegramUser(id=str(msg['from']['id']))
