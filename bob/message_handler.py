@@ -88,7 +88,7 @@ def bob_handler(msg, bot):
                 int(time.strftime("%H")) == 13 and \
                 int(time.strftime("%M")) == 37:
             print('[INFO] ' + time.strftime("%H:%M:%S") + ' Time and date correct! ')
-            bob_chat.latestLeet = timezone.localtime(timezone.now())
+            bob_chat.latestLeet = date.today()
             bob_chat.save()
             if sender._rank <= len(ranks):
                 sender._rank += 1

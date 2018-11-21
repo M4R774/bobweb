@@ -24,7 +24,7 @@ class TelegramUser(models.Model):
 class Chat(models.Model):
     id = models.CharField(max_length=255, primary_key=True)
     title = models.CharField(max_length=255, null=True)
-    latestLeet = models.DateTimeField(null=True)
+    latestLeet = models.DateField(null=True)
     botUpTimeStart = models.DateTimeField(null=True)  # date since last reboot, used for up time calculations
     messageCount = models.PositiveIntegerField(default=0)
     members = models.ManyToManyField(
