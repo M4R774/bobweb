@@ -139,7 +139,7 @@ def random_proverb():
 
 def rare_proverb():
     proverb = Proverb.objects.all().first()
-    proverb.save_count += 1
+    proverb.send_count += 1
     proverb.save()
     return proverb
 
