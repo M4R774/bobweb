@@ -69,7 +69,7 @@ class Proverb(models.Model):
     proverb = models.TextField(unique=True)
     author = models.CharField(max_length=255, null=True)
     send_count = models.PositiveIntegerField(default=0) # How many times the proverb has been sent
-    date = latestLeet = models.DateField(null=True)
+    date = models.DateField(null=True)
 
     class Meta:
         ordering = ['send_count']
@@ -77,4 +77,4 @@ class Proverb(models.Model):
     def __str__(self):
         return str(self.proverb)
 
-# Reminder objects here? 
+# Reminder objects here?
