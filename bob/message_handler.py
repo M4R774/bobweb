@@ -170,14 +170,14 @@ def spammer(msg, bot):
         reply = proverb.proverb + ' - ' + author + ' ' + year
         bot.sendMessage(msg['chat']['id'], reply)
     # Add new proverb
-    elif msg['text'][:14].lower == 'uusi viisaus: ':
+    elif msg['text'].startswith('uusi viisaus: '):
         sender_name = str(TelegramUser.objects.get(msg['from']['id']))
         proverb = Proverb(proverb=msg['text'][14:], author=sender_name, date=date.today())
         proverb.save()
         reply = 'Viisaus tallennettu. '
         bot.sendMessage(msg['chat']['id'], reply)
     # Reminder
-    elif msg['text'][13:].lower == 'bob muistuta ':
+    elif msg['text'].startswith('bob muistuta '):
         pass  # TODO
     # If string "_* vai _*" is found, make split and post random
     elif re.search(r'..*\svai\s..*', msg['text']) is not None:
