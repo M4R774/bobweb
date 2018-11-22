@@ -160,14 +160,14 @@ def spammer(msg, bot):
         proverb.send_count += 1
         proverb.save()
         if proverb.author:
-            author = proverb.author
+            author = ' - ' + proverb.author
         else:
             author = ''
         if proverb.date:
             year = str(proverb.date.year)
         else:
             year = ''
-        reply = proverb.proverb + ' - ' + author + ' ' + year
+        reply = proverb.proverb + author + ' ' + year
         bot.sendMessage(msg['chat']['id'], reply)
     # Add new proverb
     elif msg['text'].startswith('uusi viisaus: '):
