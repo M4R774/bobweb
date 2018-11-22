@@ -8,6 +8,7 @@ import sys
 import os
 from django.utils import timezone
 from django.db.models import Max
+from django.db.models import Sum
 sys.path.append('../web')  # needed for sibling import
 import django
 os.environ.setdefault(
@@ -144,11 +145,19 @@ def rare_proverb():
     return proverb
 
 
+def semi_rare_proverb():
+    proverbs = Proverb.objects.all()
+    for i in range(0 < proverbs.count()):
+        if 0.1 > random.random():
+            return proverbs[i]
+    return proverbs.last()
+
+
 # Shitposting features here
 def spammer(msg, bot):
     # Post random proverb
     if msg['text'].lower() == 'viisaus':
-        proverb = rare_proverb()
+        proverb = semi_rare_proverb()
         if proverb.author:
             author = proverb.author
         else:
@@ -157,7 +166,7 @@ def spammer(msg, bot):
             year = str(proverb.date.year)
         else:
             year = ''
-        reply = proverb.proverb + ' - ' + author + year
+        reply = proverb.proverb + ' - ' + author + ' ' + year
         bot.sendMessage(msg['chat']['id'], reply)
     # Add new proverb
     elif msg['text'][:14].lower == 'uusi viisaus: ':
