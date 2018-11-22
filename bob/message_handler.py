@@ -146,7 +146,7 @@ def rare_proverb():
 
 def semi_rare_proverb():
     proverbs = Proverb.objects.all()
-    for i in range(0 < proverbs.count()):
+    for i in range(0, proverbs.count()):
         if 0.9 < random.random():
             return proverbs[i]
     return proverbs.last()
