@@ -43,7 +43,6 @@ class Chat(models.Model):
 class ChatMember(models.Model):
     chat = models.ForeignKey('Chat', null=False, on_delete=models.CASCADE)
     tg_user = models.ForeignKey('TelegramUser', null=False, on_delete=models.CASCADE)
-    # is there a way to restrict that only one instanse of a user/chat?
     prestige = models.PositiveIntegerField(default=0)
     _rank = models.PositiveIntegerField(default=0)
 
@@ -67,8 +66,15 @@ class ChatMember(models.Model):
 
 # Viisaus
 class Proverb(models.Model):
-    proverb = models.TextField()
-    author = models.ForeignKey('TelegramUser', null=True, on_delete=models.CASCADE)
+    proverb = models.TextField(unique=True)
+    author = models.CharField(max_length=255, null=True)
+    send_count = models.PositiveIntegerField(default=0) # How many times the proverb has been sent
+    date = latestLeet = models.DateField(null=True)
+
+    class Meta:
+        ordering = ['send_count']
 
     def __str__(self):
         return str(self.proverb)
+
+# Reminder objects here? 

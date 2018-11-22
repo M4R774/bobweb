@@ -29,7 +29,7 @@ def update_user_db(msg):
         if int(msg['chat']['id']) < 0:
             chat.title = msg['chat']['title']
         chat.save()
-
+    # TODO: Make update instead of replacing old user, just like for the chats
     # Telegram user
     mario = TelegramUser(id=str(msg['from']['id']))
     if 'first_name' in msg['from']:
@@ -126,34 +126,56 @@ def bob_handler(msg, bot):
 
 
 def random_proverb():
+    # TODO: Send the one with lowest send_count first
     max_id = Proverb.objects.all().aggregate(max_id=Max("id"))['max_id']
     for i in range(0, 100):
         pk = random.randint(1, max_id)
         proverb = Proverb.objects.filter(pk=pk).first()
         if proverb:
-            return str(proverb)
+            return proverb
     # If it takes over 100 tries, return empty
-    return 'En löytänyt tietokantani uumenista viisauksia :-('
+    return None
+
+
+def rare_proverb():
+    proverb = Proverb.objects.all().first()
+    Proverb.objects.all().first().update(send_count=F('send_count') + 1)
+    return proverb
 
 
 # Shitposting features here
 def spammer(msg, bot):
     # Post random proverb
     if msg['text'].lower() == 'viisaus':
-        reply = random_proverb()
+        proverb = rare_proverb()
+        if proverb.author:
+            author = proverb.author
+        else:
+            author = ''
+        if proverb.date:
+            year = str(proverb.date.year)
+        else:
+            year = ''
+        reply = proverb.proverb + ' - ' + author + year
         bot.sendMessage(msg['chat']['id'], reply)
     # Add new proverb
-    elif re.search(r'^uusi viisaus: ', msg['text'], re.IGNORECASE) is not None:
-        proverb = Proverb(proverb=msg['text'][14:])
+    elif msg['text'][:14].lower == 'uusi viisaus: ':
+        sender_name = str(TelegramUser.objects.get(msg['from']['id']))
+        proverb = Proverb(proverb=msg['text'][14:], author=sender_name, date=date.today())
         proverb.save()
         reply = 'Viisaus tallennettu. '
         bot.sendMessage(msg['chat']['id'], reply)
+    # Reminder
+    elif msg['text'][13:].lower == 'bob muistuta ':
+        pass  # TODO
     # If string "_* vai _*" is found, make split and post random
     elif re.search(r'..*\svai\s..*', msg['text']) is not None:
         options = re.split(r'\svai\s', msg['text'])
         reply = (random.choice(options))
         print('[SEND] ' + time.strftime("%H:%M:%S") + " " + reply)
         bot.sendMessage(msg['chat']['id'], reply)
+
+        # TODO: Add the remind me feature
 
 
 def msg_handler(msg, bot, settings_data):
