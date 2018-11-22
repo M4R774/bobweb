@@ -140,7 +140,6 @@ def random_proverb():
 
 def rare_proverb():
     proverb = Proverb.objects.all().first()
-    proverb.send_count += 1
     proverb.save()
     return proverb
 
@@ -148,7 +147,7 @@ def rare_proverb():
 def semi_rare_proverb():
     proverbs = Proverb.objects.all()
     for i in range(0 < proverbs.count()):
-        if 0.1 < random.random():
+        if 0.9 < random.random():
             return proverbs[i]
     return proverbs.last()
 
@@ -158,6 +157,8 @@ def spammer(msg, bot):
     # Post random proverb
     if msg['text'].lower() == 'viisaus':
         proverb = semi_rare_proverb()
+        proverb.send_count += 1
+        proverb.save()
         if proverb.author:
             author = proverb.author
         else:
