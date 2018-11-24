@@ -47,7 +47,7 @@ os.chdir('../web')
 print("Bob is now running and receiving messages. ")
 
 while True:
-    check_reminders(bot)
+    #check_reminders(bot)
     schedule.run_pending()
     time.sleep(1)
 

@@ -15,5 +15,5 @@ from halloffame.models import *
 
 
 # Checks the reminders
-def check_reminders():
+def check_reminders(bot):
     pass
