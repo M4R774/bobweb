@@ -1,6 +1,7 @@
 import message_handler
 import data_handler
 import scheduled
+import reminder
 import schedule
 import telepot
 import time
@@ -46,7 +47,8 @@ os.chdir('../web')
 print("Bob is now running and receiving messages. ")
 
 while True:
+    check_reminders(bot)
     schedule.run_pending()
-    time.sleep(60)
+    time.sleep(1)
 
 
