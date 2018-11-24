@@ -176,6 +176,9 @@ def spammer(msg, bot):
         proverb.save()
         reply = 'Viisaus tallennettu. '
         bot.sendMessage(msg['chat']['id'], reply)
+    elif msg['text'].lower() == "Bob, kuinka viisas olet?":
+        reply = str(Proverb.objects.all().count())
+        bot.sendMessage(msg['chat']['id'], reply)
     # Reminder
     elif msg['text'].startswith('bob muistuta '):
         pass  # TODO
