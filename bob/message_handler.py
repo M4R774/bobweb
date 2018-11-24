@@ -181,6 +181,7 @@ def spammer(msg, bot):
         bot.sendMessage(msg['chat']['id'], reply)
     # Reminder
     elif msg['text'].startswith('bob muistuta '):
+        # Correct message form: muistuta xd yh zm
         pass  # TODO
     # If string "_* vai _*" is found, make split and post random
     elif re.search(r'..*\svai\s..*', msg['text']) is not None:
