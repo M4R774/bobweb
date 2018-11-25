@@ -17,7 +17,7 @@ from halloffame.models import *
 
 # Checks the reminders
 def check_reminders(bot):
-    reminders = Reminder.objects.filter(date__gt=datetime.now())
+    reminders = Reminder.objects.filter(date__lte=datetime.now())
     for reminder in reminders:
         reply = 'Muista: ' + str(reminder.remember_this)
         bot.sendMessage(reminder.chat.id, reply)

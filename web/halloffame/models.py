@@ -84,9 +84,6 @@ class Reminder(models.Model):
     chat = models.ForeignKey('Chat', null=False, on_delete=models.CASCADE)  # Where to remind
     date = models.DateTimeField(null=False)  # When to remind
 
-    class Meta:
-        ordering = ['-date']
-
     def __str__(self):
         return str(self.date)
 
