@@ -166,21 +166,22 @@ def set_reminder(msg, bot):
     # create the
 
     # TODO: make also float number possible
+    # TODO: make also possible to simply put the date in to this
     # Extract times                   1          2          3          4     5
     expr = re.match(r'muistuta ([0-9]+y )?([0-9]+d )?([0-9]+h )?([0-9]+m )?(.+)', msg['text'])
     if expr.group(1) or expr.group(2) or expr.group(3) or expr.group(4):
         remind_date = datetime.now()
         if expr.group(1):
-            year = float(expr.group(1))
+            year = float(expr.group(1)[:-2])  # Could not convert 1m to float
             remind_date = remind_date + timedelta(days=year)
         if expr.group(2):
-            day = float(expr.group(2))
+            day = float(expr.group(2)[:-2])
             remind_date = remind_date + timedelta(days=day)
         if expr.group(3):
-            hour = float(expr.group(3))
+            hour = float(expr.group(3)[:-2])
             remind_date = remind_date + timedelta(days=hour)
         if expr.group(4):
-            minute = float(expr.group(4))
+            minute = float(expr.group(4)[:-2])
             remind_date = remind_date + timedelta(days=minute)
         remember_this = expressions.group(5)
         # TODO: Local time for remind_date
