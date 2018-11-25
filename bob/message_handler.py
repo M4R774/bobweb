@@ -157,14 +157,8 @@ def semi_rare_proverb():
 # Parses the time from message
 # Initial version will have only possibility to add hours
 def set_reminder(msg, bot):
-    # Split the time elements from the message
-    # y, d, h, m, s
-    # Regex splitting?
-    # r'muistuta _*y
     # if fails, send error message describing usage and return
-    # sum the values to the current date
-    # create the
-
+    chat = Chat.objects.get(id=str(msg['chat']['id']))
     # TODO: make also float number possible
     # TODO: make also possible to simply put the date in to this
     # Extract times                   1          2          3          4     5
@@ -185,7 +179,7 @@ def set_reminder(msg, bot):
             remind_date = remind_date + timedelta(days=minute)
         remember_this = expr.group(5)
         # TODO: Local time for remind_date
-        reminder = Reminder(remember_this=remember_this, chat=msg['from']['id'], date=remind_date)
+        reminder = Reminder(remember_this=remember_this, chat=chat, date=remind_date)
         reminder.save()
         reply = 'Muistutetaan ' + str(reminder_time)
         bot.sendMessage(msg['chat']['id'], reply)
