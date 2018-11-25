@@ -181,7 +181,7 @@ def set_reminder(msg, bot):
         # TODO: Local time for remind_date
         reminder = Reminder(remember_this=remember_this, chat=chat, date=remind_date)
         reminder.save()
-        reply = 'Muistutetaan ' + str(reminder_time)
+        reply = 'Muistutetaan ' + str(remind_date)
         bot.sendMessage(msg['chat']['id'], reply)
     else:
         reply = 'Muistutus oli väärää muotoa. '
