@@ -179,7 +179,6 @@ def set_reminder(msg, bot):
             minute = float(expr.group(4)[:-2])
             remind_date = remind_date + timedelta(minutes=minute)
         remember_this = expr.group(5)
-        # TODO: Local time for remind_date
         reminder = Reminder(remember_this=remember_this, chat=chat, date=remind_date)
         reminder.save()
         reply = 'Muistutetaan ' + str(remind_date.strftime('%d.%m.%Y klo %H:%M'))
@@ -225,6 +224,9 @@ def spammer(msg, bot):
         options = re.split(r'\svai\s', msg['text'])
         reply = (random.choice(options))
         print('[SEND] ' + time.strftime("%H:%M:%S") + " " + reply)
+        bot.sendMessage(msg['chat']['id'], reply)
+    elif msg['text'].lower() == "huutista":
+        reply = '...joka tuutista! 😂'
         bot.sendMessage(msg['chat']['id'], reply)
 
 
