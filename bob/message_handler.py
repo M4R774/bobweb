@@ -183,7 +183,7 @@ def set_reminder(msg, bot):
         if expr.group(4):
             minute = float(expr.group(4)[:-2])
             remind_date = remind_date + timedelta(days=minute)
-        remember_this = expressions.group(5)
+        remember_this = expr.group(5)
         # TODO: Local time for remind_date
         reminder = Reminder(remember_this=remember_this, chat=msg['from']['id'], date=remind_date)
         reminder.save()
