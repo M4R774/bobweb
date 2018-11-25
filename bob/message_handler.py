@@ -161,27 +161,28 @@ def set_reminder(msg, bot):
     chat = Chat.objects.get(id=str(msg['chat']['id']))
     # TODO: make also float number possible
     # TODO: make also possible to simply put the date in to this
+    # TODO: add months also
     # Extract times                   1          2          3          4     5
     expr = re.match(r'muistuta ([0-9]+y )?([0-9]+d )?([0-9]+h )?([0-9]+m )?(.+)', msg['text'])
     if expr.group(1) or expr.group(2) or expr.group(3) or expr.group(4):
         remind_date = datetime.now()
         if expr.group(1):
-            year = float(expr.group(1)[:-2])  # Could not convert 1m to float
-            remind_date = remind_date + timedelta(days=year)
+            year = float(expr.group(1)[:-2])
+            remind_date = remind_date + timedelta(days=year*365)
         if expr.group(2):
             day = float(expr.group(2)[:-2])
             remind_date = remind_date + timedelta(days=day)
         if expr.group(3):
             hour = float(expr.group(3)[:-2])
-            remind_date = remind_date + timedelta(days=hour)
+            remind_date = remind_date + timedelta(hours=hour)
         if expr.group(4):
             minute = float(expr.group(4)[:-2])
-            remind_date = remind_date + timedelta(days=minute)
+            remind_date = remind_date + timedelta(minutes=minute)
         remember_this = expr.group(5)
         # TODO: Local time for remind_date
         reminder = Reminder(remember_this=remember_this, chat=chat, date=remind_date)
         reminder.save()
-        reply = 'Muistutetaan ' + str(remind_date)
+        reply = 'Muistutetaan ' + str(remind_date.strftime('%d.%m.%Y klo %H:%M'))
         bot.sendMessage(msg['chat']['id'], reply)
     else:
         reply = 'Muistutus oli väärää muotoa. '
