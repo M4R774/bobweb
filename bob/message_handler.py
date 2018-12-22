@@ -79,7 +79,10 @@ def debug_handler(msg, bot):
     """
     pass
 
-
+# If leet is missed [höh kukaan ei sanonut leet, voi rähmä 2 leetitöntä päivää putkeen :(,
+# eikö kukaan taaskaan? Lopun ajat ovat koittaneet,
+# yrittäkää nyt, harmittaa, masentaa,
+# mitä iloa on elää jos kukaan ei sano 1337?]
 def bob_handler(msg, bot):
     bob_chat = Chat.objects.get(id=str(msg['chat']['id']))
     sender = ChatMember.objects.get(chat=str(msg['chat']['id']),
@@ -129,7 +132,6 @@ def bob_handler(msg, bot):
 
 
 def random_proverb():
-    # TODO: Send the one with lowest send_count first
     max_id = Proverb.objects.all().aggregate(max_id=Max("id"))['max_id']
     for i in range(0, 100):
         pk = random.randint(1, max_id)
@@ -138,14 +140,10 @@ def random_proverb():
             return proverb
     # If it takes over 100 tries, return empty
     return None
-
-
 def rare_proverb():
     proverb = Proverb.objects.all().first()
     proverb.save()
     return proverb
-
-
 def semi_rare_proverb():
     proverbs = Proverb.objects.all()
     for i in range(0, proverbs.count()):
@@ -154,8 +152,6 @@ def semi_rare_proverb():
     return proverbs.last()
 
 
-# Parses the time from message
-# Initial version will have only possibility to add hours
 def set_reminder(msg, bot):
     # if fails, send error message describing usage and return
     chat = Chat.objects.get(id=str(msg['chat']['id']))
@@ -207,7 +203,7 @@ def spammer(msg, bot):
         reply = proverb.proverb + author + ' ' + year
         bot.sendMessage(msg['chat']['id'], reply)
     # Add new proverb
-    elif msg['text'].startswith('uusi viisaus: '):
+    elif msg['text'][:14].lower() == 'uusi viisaus: ':
         sender_name = str(TelegramUser.objects.get(id=str(msg['from']['id'])))
         proverb = Proverb(proverb=msg['text'][14:], author=sender_name, date=date.today())
         proverb.save()
@@ -217,7 +213,7 @@ def spammer(msg, bot):
         reply = str(Proverb.objects.all().count())
         bot.sendMessage(msg['chat']['id'], reply)
     # Reminder
-    elif msg['text'].lower().startswith('muistuta '):
+    elif msg['text'][:9].lower == 'muistuta ':
         set_reminder(msg, bot)
     # If string "_* vai _*" is found, make split and post random
     elif re.search(r'..*\svai\s..*', msg['text']) is not None:
