@@ -5,7 +5,7 @@ from weatherstation.models import *
 from django.http import HttpResponse
 
 
-def weatherstation(request):
+def index(request):
     return render(request, 'chart.html')
 
 
