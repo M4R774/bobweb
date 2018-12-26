@@ -51,10 +51,12 @@ def TemperaturMessung():
     f.close()
     return lines
 
+
 # Analysis of temperature: At the Raspberry Pi
 # noticed one-wire slaves at the directory /sys/bus/w1/devices/
 # will be assigned to a own subfolder.
-# In this folder is the file in which the data from the one-wire bus will be saved.<br /># In this function, the data will be analyzed, the temperature read and returned to the main program.<br />
+# In this folder is the file in which the data from the one-wire bus will be saved.<br />
+# In this function, the data will be analyzed, the temperature read and returned to the main program.<br />
 def TemperaturAuswertung():
     lines = TemperaturMessung()
     while lines[0].strip()[-3:] != 'YES':
@@ -89,9 +91,9 @@ try:
             
             # Logging the measurements to .csv file 
             # with open("measurements_log.csv", "a") as log_file:
-                # log_file.write('\n' + datetime.now().strftime('%d.%m.%Y;%H:%M') + ';{:.1f};{:.0f}'.format(ky001_temp, humid))
+            # log_file.write('\n' + datetime.now().strftime('%d.%m.%Y;%H:%M') /
+            # + ';{:.1f};{:.0f}'.format(ky001_temp, humid))
 
-        
         # Because of the linux OS, the Raspberry Pi has problems with realtime measurements.
         # It is possible that, because of timing problems, the communication fails.
         # In that case, an error message will be displayed - the result should be shown at the next try.
