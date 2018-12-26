@@ -1,14 +1,6 @@
 from django.shortcuts import render
 from weatherstation.models import *
 
-import pandas
-from pandas import DataFrame
-
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-from matplotlib.figure import Figure
-from matplotlib.dates import DateFormatter
-
-
 # Create your views here.
 from django.http import HttpResponse
 
