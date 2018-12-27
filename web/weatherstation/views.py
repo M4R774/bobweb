@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from weatherstation.models import *
-
-# Create your views here.
 from django.http import HttpResponse
+import json
+from django.http import JsonResponse
 
 
 def index(request):
@@ -11,23 +11,58 @@ def index(request):
 
 def chart_data(request):
     # Collect the measurement data from the db
-    dataset = Passenger.objects \
-        .values('embarked') \
-        .exclude(embarked='') \
-        .annotate(total=Count('embarked')) \
-        .order_by('embarked')
-
-    port_display_name = dict()
-    for port_tuple in Passenger.PORT_CHOICES:
-        port_display_name[port_tuple[0]] = port_tuple[1]
-
+    dataset = Measurement.objects.all()
+    
+    temperature_set = []
+    humidity_set = []
+    
+    temperature_queryset = Measurement.objects.all().values_list('date', 'temperature')
+    for i, measurement in enumerate(temperature_queryset): 
+        temperature_set.insert(i, (measurement[0], measurement[1]))
+    humidity_queryset = Measurement.objects.all().values_list('date', 'humidity')
+    for i, measurement in enumerate(humidity_queryset): 
+        humidity_set.insert(i, (measurement[0], measurement[1]))
+    
     chart = {
-        'chart': {'type': 'pie'},
-        'title': {'text': 'Titanic Survivors by Ticket Class'},
-        'series': [{
-            'name': 'Embarkation Port',
-            'data': list(map(lambda row: {'name': port_display_name[row['embarked']], 'y': row['total']}, dataset))
+        'title': {'text': 'Lämpötila ja suhteellinen kosteus'},
+        'subtitle': {'text': 'Aleksi Martikainen'},
+        'xAxis': {'type': 'datetime'},
+        
+        
+        'yAxis': [
+            { # Primary yAxis
+                'title': {
+                    'text': 'Temperature',
+                },
+                'labels': {
+                    'format': '{value} °C',
+                },
+            }, 
+            { # Secondary yAxis
+                'title': {
+                    'text': 'Relative Humidity',
+                },
+                'labels': {
+                    'format': '{value} %',
+                },
+                'opposite': 'true'
+            }],
+        
+        'series': [
+        {
+            'name': 'Temperature',
+            'data': list(map(lambda x:(float(x[0].strftime('%s'))*1000, float(x[1])), temperature_set))
+        },
+        {   
+            'name': 'Relative Humidity',
+            'data': list(map(lambda x:(float(x[0].strftime('%s'))*1000, float(x[1])), humidity_set)),
+            'yAxis': 1
         }]
     }
-
     return JsonResponse(chart)
+
+    
+    
+    
+    
+    

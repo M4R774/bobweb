@@ -9,3 +9,13 @@ class Measurement(models.Model):
     
     def __str__(self):
         return str(self.humidity)
+        
+
+    def get_temperature(self):
+        return (self.date, self.temperature)
+        
+    def get_temperature(self):
+        return (self.date, self.humidity)
+        
+    class Meta: 
+        ordering = ['date']
