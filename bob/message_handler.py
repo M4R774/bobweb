@@ -213,7 +213,7 @@ def spammer(msg, bot):
         reply = str(Proverb.objects.all().count())
         bot.sendMessage(msg['chat']['id'], reply)
     # Reminder
-    elif msg['text'][:9].lower == 'muistuta ':
+    elif msg['text'][:9].lower() == 'muistuta ':
         set_reminder(msg, bot)
     # If string "_* vai _*" is found, make split and post random
     elif re.search(r'..*\svai\s..*', msg['text']) is not None:
