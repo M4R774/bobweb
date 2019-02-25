@@ -116,7 +116,7 @@ def bob_handler(msg, bot):
             bot.sendMessage(msg['chat']['id'], reply)
 
         # 33% chance for demotes
-        elif randint(0, 2) == 0:
+        elif randint(0, 1) == 0:
             print('[INFO] ' + time.strftime("%H:%M:%S") + ' Incorrect time, removing points. ')
             if sender._rank > 0:
                 sender._rank -= 1
