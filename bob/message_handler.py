@@ -99,7 +99,7 @@ def bob_handler(msg, bot):
             print('[INFO] ' + time.strftime("%H:%M:%S") + ' Time and date correct! ')
             bob_chat.latestLeet = date.today()
             bob_chat.save()
-            if sender._rank <= len(ranks):
+            if sender._rank < len(ranks):
                 sender._rank += 1
                 up = u"\U0001F53C"
                 reply = "Asento! " + str(sender.tg_user) + " ansaitsi ylennyksen arvoon " + \
