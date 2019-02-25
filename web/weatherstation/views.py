@@ -16,10 +16,10 @@ def chart_data(request):
     temperature_set = []
     humidity_set = []
     
-    temperature_queryset = Measurement.objects.all().values_list('date', 'temperature')
+    temperature_queryset = Measurement.objects.all().values_list('date', 'temperature')[240:]
     for i, measurement in enumerate(temperature_queryset): 
         temperature_set.insert(i, (measurement[0], measurement[1]))
-    humidity_queryset = Measurement.objects.all().values_list('date', 'humidity')
+    humidity_queryset = Measurement.objects.all().values_list('date', 'humidity')[240:]
     for i, measurement in enumerate(humidity_queryset): 
         humidity_set.insert(i, (measurement[0], measurement[1]))
     
