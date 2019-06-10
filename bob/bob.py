@@ -9,9 +9,11 @@ import json
 import sys
 import os
 
+# TODO: Logging
+# TODO: Containerization
+# TODO:
 # TODO: xkcd spammer, random or latest?
 # TODO: Reminder upgrades (replys, quotes?)
-# TODO: Speech to text
 # TODO: Periodic proverbs (1 per 1-60 days)
 # TODO: Invent more dank features
 # TODO: weather?

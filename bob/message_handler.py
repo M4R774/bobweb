@@ -99,7 +99,7 @@ def bob_handler(msg, bot):
             print('[INFO] ' + time.strftime("%H:%M:%S") + ' Time and date correct! ')
             bob_chat.latestLeet = date.today()
             bob_chat.save()
-            if sender._rank < len(ranks):
+            if sender._rank < len(ranks) - 1:
                 sender._rank += 1
                 up = u"\U0001F53C"
                 reply = "Asento! " + str(sender.tg_user) + " ansaitsi ylennyksen arvoon " + \
@@ -107,8 +107,7 @@ def bob_handler(msg, bot):
             else:
                 sender.prestige += 1
                 reply = "Asento! " + str(sender.tg_user) + \
-                        " on saavuttanut jo korkeimman mahdollisen sotilasarvon " + \
-                        ranks[sender._rank] + "! Näin ollen " + str(sender.tg_user) + \
+                        " on saavuttanut jo korkeimman mahdollisen sotilasarvon! Näin ollen " + str(sender.tg_user) + \
                         " lähtee uudelle kierrokselle. Onneksi olkoon! " + \
                         "Juuri päättynyt kierros oli hänen " + str(sender.prestige) + ". Lepo. "
                 sender._rank = 0
