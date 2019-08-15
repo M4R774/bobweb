@@ -1,56 +1,51 @@
-import message_handler
-import data_handler
-import scheduled
-import reminder
-import schedule
 import telepot
-import time
-import json
+from telepot.loop import MessageLoop
 import sys
-import os
-
-# TODO: Logging
-# TODO: Containerization
-# TODO:
-# TODO: xkcd spammer, random or latest?
-# TODO: Reminder upgrades (replys, quotes?)
-# TODO: Periodic proverbs (1 per 1-60 days)
-# TODO: Invent more dank features
-# TODO: weather?
+import json
+import logging.config
+import reminder
+import time
+import schedule
+import message_handler
+from postgres import Postgres
 
 
-settings_data = {}
+def main_loop():
+    while True:
+        # reminder.check_reminders(bob)
+        # schedule.run_pending()
+        time.sleep(60)
+
+
+def get_bot_token():
+    with open("settings.json", mode="r") as data_file:
+        json_string = data_file.read()
+        settings_data = json.loads(json_string)
+        return settings_data["bot_token"]
 
 
 def handle(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
-    if content_type == "text":  # and settings_data["bob_ID"] == chat_id:
-        message_handler.msg_handler(msg, bot, settings_data)
+    if content_type == "text":
+        message_handler.msg_handler(msg, bob, db_connection)
+
+"""
+def init_db_connection():
+    try:
+        db = connect_to_database()
+        return db
+    except: # TODO: Narrow down handling
+        logger.error("Database connection failed. ")
+        exit(1)
 
 
-# Read the settings.json in to a memory
-try:
-    with open("settings.json", mode="r") as data_file:
-        json_string = data_file.read()
-        settings_data = json.loads(json_string)
-except:
-    print("Failed to read settings.json")
-    print(sys.exc_info()[0])
-    print("Exiting...")
-    exit()
+def connect_to_database():
+    db = Postgres("postgresql://postgres:postgres@db:5432/postgres")
+    logger.info("Database connection initialized. ")
+    return db
+"""
 
-bot = telepot.Bot(settings_data["bot_token"])
-bot.message_loop(handle)
-
-# commented out because of bug
-# schedule.every().friday.at("16:15").do(scheduled.bob_friday(bot))
-
-os.chdir('../web')
-print("Bob is now running and receiving messages. ")
-
-while True:
-    reminder.check_reminders(bot)
-    schedule.run_pending()
-    time.sleep(1)
-
-
+logger = logging.getLogger("bob_logger")
+db_connection = init_db_connection()
+bob = telepot.Bot(get_bot_token())
+MessageLoop(bob, handle).run_as_thread()
