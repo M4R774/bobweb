@@ -1,0 +1,7 @@
+# comment
+*/venv*
+*.git*
+*.idea*
+*Dockerfile*
+*docker-compose.yml*
+*__pycache__*

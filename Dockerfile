@@ -1,10 +1,13 @@
-FROM python:3-slim-stretch
-USER root
-WORKDIR /root/
-COPY . .
+FROM python:3.7-alpine as builder
+RUN apk update && apk upgrade
+RUN apk add gcc python3-dev musl-dev postgresql-dev
+COPY bob/requirements.txt .
 RUN pip install -r requirements.txt
-# cd to ensure that db_file is in the right location
-WORKDIR /root/web/
-RUN python3 manage.py migrate
-WORKDIR /root/
-ENTRYPOINT ["python3", "web/manage.py", "runserver"]
+
+
+FROM python:3.7-alpine as runner
+RUN apk add postgresql-libs
+COPY --from=builder /usr/local/lib/python3.7/site-packages /usr/local/lib/python3.7/site-packages
+COPY . .
+WORKDIR /bob
+ENTRYPOINT ["python3", "start_bot.py"]

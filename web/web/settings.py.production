@@ -25,7 +25,7 @@ SECRET_KEY = 'w^-6tyyaxjlw7%)o+*u(o3lpe1*b1zvjn-)cgj0ihv(qtrgdp*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', '89.106.38.187', '192.168.10.49']
 
 
 # Application definition
@@ -78,12 +78,12 @@ WSGI_APPLICATION = 'web.wsgi.application'
 
 DATABASES={
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'bob_database',
-        'USER': 'admin',
-        'PASSWORD': 'admin',
-        'HOST': 'localhost',
-        'PORT': '8001',
+        'USER': 'bob',
+        'PASSWORD': 'bob',
+        'HOST': 'db',
+        'PORT': '5432',
     }
 }
 
