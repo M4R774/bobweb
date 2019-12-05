@@ -101,3 +101,5 @@ bob_database
 *migrations
 wanha-telegram-botti*
 db.sqlite3
+*.sqlite
+*_log.csv
