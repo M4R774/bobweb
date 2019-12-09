@@ -3,8 +3,8 @@ version: '3'
 services:
   bob:
     build: .
-    depends_on:
-      - db
+    # depends_on:
+    #  - db
     networks:
       - bobweb
 
@@ -18,16 +18,16 @@ services:
 #    networks:
 #      - bobweb
 
-  db:
-    image: postgres:12-alpine
-    ports:
-      - "5432:5432"
-    networks:
-      - bobweb
-    environment:
-      POSTGRES_DB: bob
-      POSTGRES_USER: bob
-      POSTGRES_PASSWORD: bob
+#  db:
+#    image: postgres:12-alpine
+#    ports:
+#      - "5432:5432"
+#    networks:
+#      - bobweb
+#    environment:
+#      POSTGRES_DB: bob
+#      POSTGRES_USER: bob
+#      POSTGRES_PASSWORD: bob
 
 networks:
   bobweb:

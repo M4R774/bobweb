@@ -1,4 +1,5 @@
 import data_handler
+import wisdom
 import re
 from random import randint
 import random
@@ -7,39 +8,54 @@ from datetime import date
 from datetime import datetime
 from datetime import timedelta
 import logging
-import sys
-import os
 from django.utils import timezone
 from django.db.models import Max
 from django.db.models import Sum
 import django
-sys.path.append('../web')  # needed for sibling import
+import sys
+import os
+sys.path.append('../../web')  # needed for sibling import
 os.environ.setdefault(
     "DJANGO_SETTINGS_MODULE",
     "web.settings"
 )
 from django.conf import settings
 django.setup()
-from halloffame.models import *
+# Seperate imports to remove red underlines
+from halloffame.models import Chat, TelegramUser, ChatMember, Proverb
 
 logger = logging.getLogger("bob_logger")
 
 
 def msg_handler(msg, bot):
-    logger.info("Received message. ")
+    logger.info("Message from " + get_nickname_from_message(msg) +
+                " (id: " + msg['from']['id'] + ")")
     msg_sorter(msg, bot)
     update_user_db(msg)
     debug_handler(msg, bot)
 
 
-# Figure out the type of the message
+def get_nickname_from_message(msg):
+    if 'username' in msg['from']:
+        nickname = msg['from']['username']
+    elif 'first_name' in msg['from']:
+        nickname = msg['from']['first_name']
+    elif 'last_name' in msg['from']:
+        nickname = msg['from']['last_name']
+    elif 'id' in msg['from']:
+        nickname = msg['from']['id']
+    else:
+        nickname = "NULL"
+    return nickname
+
+
 def msg_sorter(msg, bot):
     if msg['text'].lower() == "huutista":
         joka_tuutista(msg, bot)
-    # muistuta
-    # 1337
-    # viisaus
-    # uusi viisaus
+    elif msg['text'].lower() == 'viisaus':
+        wisdom.respond_with_random_wisdom(msg, bot)
+    elif msg['text'][:14].lower() == 'uusi viisaus: ':
+        wisdom.add_new_wisdom_to_database(msg, bot)
 
 
 def joka_tuutista(msg, bot):
@@ -68,22 +84,6 @@ def update_user_db(msg):
     logger.info("Successfully updated user-db. ")
 
 
-def extract_nickname(msg):
-    # TODO: clean this up
-    nickname = "NULL"
-    first_name = "NULL"
-    last_name = "NULL"
-    if 'last_name' in msg['from']:
-        nickname = msg['from']['last_name']
-        last_name = msg['from']['last_name']
-    if 'first_name' in msg['from']:
-        nickname = msg['from']['first_name']
-        first_name = msg['from']['first_name']
-    if 'username' in msg['from']:
-        nickname = msg['from']['username']
-    return nickname
-
-
 def debug_handler(msg, bot):
     if msg['text'] == "moi":
         sunglasses = u"\U0001F60E"
@@ -107,10 +107,6 @@ def debug_handler(msg, bot):
         bot.sendMessage(str(msg['chat']['id']), str(reply))
 
 
-# If leet is missed [höh kukaan ei sanonut leet, voi rähmä 2 leetitöntä päivää putkeen :(,
-# eikö kukaan taaskaan? Lopun ajat ovat koittaneet,
-# yrittäkää nyt, harmittaa, masentaa,
-# mitä iloa on elää jos kukaan ei sano 1337?]
 def bob_handler(msg, bot):
     bob_chat = Chat.objects.get(id=str(msg['chat']['id']))
     sender = ChatMember.objects.get(chat=str(msg['chat']['id']),
@@ -158,38 +154,9 @@ def bob_handler(msg, bot):
         sender.save()
 
 
-def random_proverb():
-    pass
-    # max_id = Proverb.objects.all().aggregate(max_id=Max("id"))['max_id']
-    for i in range(0, 100):
-        pk = random.randint(1, max_id)
-        proverb = Proverb.objects.filter(pk=pk).first()
-        if proverb:
-            return proverb
-    # If it takes over 100 tries, return empty
-    return None
-
-
-def rare_proverb():
-    pass
-    # proverb = Proverb.objects.all().first()
-    proverb.save()
-    return proverb
-
-
-def semi_rare_proverb():
-    pass
-#     proverbs = Proverb.objects.all()
-    for i in range(0, proverbs.count()):
-        if 0.9 < random.random():
-            return proverbs[i]
-    return proverbs.last()
-
-
 def set_reminder(msg, bot):
     # if fails, send error message describing usage and return
     chat = Chat.objects.get(id=str(msg['chat']['id']))
-    # TODO: make also float number possible
     # TODO: make also possible to simply put the date in to this
     # TODO: add months also
     # Extract times                   1          2          3          4     5
@@ -219,10 +186,8 @@ def set_reminder(msg, bot):
         print('[ERRO] Something went wrong')
 
 
-# Shitposting features here
 def spammer(msg, bot):
-    pass
-    # # Post random proverb
+    # Post random proverb
     if msg['text'].lower() == 'viisaus':
         proverb = semi_rare_proverb()
         proverb.send_count += 1
