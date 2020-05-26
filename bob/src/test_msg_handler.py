@@ -1,9 +1,9 @@
 import telepot
 import sys
-sys.path.append('../src')  # needed for sibling import
+sys.path.append('.')
 import message_handler
 import bob
-import wisdom
+import proverb
 
 bot = telepot.Bot("1028389396:AAFXTRhz0efUWoDTgnbxvexkpaPktoR3X_I")
 basic_message = {
@@ -38,46 +38,56 @@ huutista_message_2 = {
     "from": {"id": "1234"},
     "text": "hUuTiStA"
 }
-wisdom_message_0 = {
+proverb_message_0 = {
     "from": {"id": "1234"},
     "text": "Viisaus"
 }
-wisdom_message_1 = {
+proverb_message_1 = {
     "from": {"id": "1234"},
     "text": "viisaus"
 }
-wisdom_message_2 = {
+proverb_message_2 = {
     "from": {"id": "1234"},
     "text": "vIiSaUs"
 }
-wisdom_message_invalid = {
+proverb_message_invalid = {
     "from": {"id": "1234"},
     "text": "vIiSaUs!"
 }
-new_wisdom_0 = {
+new_proverb_0 = {
     "from": {"id": "1234"},
     "text": "uusi viisaus: Tämä on uusi viisaus"
 }
-new_wisdom_1 = {
+new_proverb_1 = {
     "from": {"id": "1234"},
     "text": "Uusi viisaus: ::!!Tämä on uusi viisaus!!"
 }
-new_wisdom_2 = {
+new_proverb_2 = {
     "from": {"id": "1234"},
     "text": "uUsI ViIsAuS: ::!!Tämä on uusi viisaus!!"
 }
-new_wisdom_invalid_0 = {
+new_proverb_invalid_0 = {
     "from": {"id": "1234"},
     "text": "uUsI ViIsAuS:"
 }
-new_wisdom_invalid_1 = {
+new_proverb_invalid_1 = {
     "from": {"id": "1234"},
     "text": "uusi viisaus Tämä on uusi viisaus"
 }
-new_wisdom_invalid_2 = {
+new_proverb_invalid_2 = {
     "from": {"id": "1234"},
     "text": "uusi viisaus:: Tämä on uusi viisaus"
 }
+moldy_proverb_0 = {
+    "proverb": "Homeinen viisaus"
+}
+
+
+class MockProverb:
+    def __init__(self):
+        self.author = None
+        self.date = None
+        self.proverb = "Homeinen viisaus"
 
 
 class TestSuite:
@@ -100,27 +110,27 @@ class TestSuite:
         message_handler.msg_sorter(huutista_message_2, "Dummy parameter")
         message_handler.joka_tuutista.assert_called_with(huutista_message_2, "Dummy parameter")
 
-    def test_msg_sorter_wisdom(self, mocker):
-        mocker.patch("wisdom.respond_with_random_wisdom")
-        message_handler.msg_sorter(wisdom_message_invalid, "Dummy parameter")
-        message_handler.msg_sorter(wisdom_message_0, "Dummy parameter")
-        wisdom.respond_with_random_wisdom.assert_called_once_with(wisdom_message_0, "Dummy parameter")
-        message_handler.msg_sorter(wisdom_message_1, "Dummy parameter")
-        wisdom.respond_with_random_wisdom.assert_called_with(wisdom_message_1, "Dummy parameter")
-        message_handler.msg_sorter(wisdom_message_2, "Dummy parameter")
-        wisdom.respond_with_random_wisdom.assert_called_with(wisdom_message_2, "Dummy parameter")
+    def test_msg_sorter_proverb(self, mocker):
+        mocker.patch("proverb.respond_with_random_proverb")
+        message_handler.msg_sorter(proverb_message_invalid, "Dummy parameter")
+        message_handler.msg_sorter(proverb_message_0, "Dummy parameter")
+        proverb.respond_with_random_proverb.assert_called_once_with(proverb_message_0, "Dummy parameter")
+        message_handler.msg_sorter(proverb_message_1, "Dummy parameter")
+        proverb.respond_with_random_proverb.assert_called_with(proverb_message_1, "Dummy parameter")
+        message_handler.msg_sorter(proverb_message_2, "Dummy parameter")
+        proverb.respond_with_random_proverb.assert_called_with(proverb_message_2, "Dummy parameter")
 
-    def test_msg_sorter_add_wisdom(self, mocker):
-        mocker.patch("wisdom.add_new_wisdom_to_database")
-        message_handler.msg_sorter(new_wisdom_invalid_0, "Dummy parameter")
-        message_handler.msg_sorter(new_wisdom_invalid_1, "Dummy parameter")
-        message_handler.msg_sorter(new_wisdom_invalid_2, "Dummy parameter")
-        message_handler.msg_sorter(new_wisdom_0, "Dummy parameter")
-        wisdom.add_new_wisdom_to_database.assert_called_once_with(new_wisdom_0, "Dummy parameter")
-        message_handler.msg_sorter(new_wisdom_1, "Dummy parameter")
-        wisdom.add_new_wisdom_to_database.assert_called_with(new_wisdom_1, "Dummy parameter")
-        message_handler.msg_sorter(new_wisdom_2, "Dummy parameter")
-        wisdom.add_new_wisdom_to_database.assert_called_with(new_wisdom_2, "Dummy parameter")
+    def test_msg_sorter_add_proverb(self, mocker):
+        mocker.patch("proverb.add_new_proverb_to_database")
+        message_handler.msg_sorter(new_proverb_invalid_0, "Dummy parameter")
+        message_handler.msg_sorter(new_proverb_invalid_1, "Dummy parameter")
+        message_handler.msg_sorter(new_proverb_invalid_2, "Dummy parameter")
+        message_handler.msg_sorter(new_proverb_0, "Dummy parameter")
+        proverb.add_new_proverb_to_database.assert_called_once_with(new_proverb_0, "Dummy parameter")
+        message_handler.msg_sorter(new_proverb_1, "Dummy parameter")
+        proverb.add_new_proverb_to_database.assert_called_with(new_proverb_1, "Dummy parameter")
+        message_handler.msg_sorter(new_proverb_2, "Dummy parameter")
+        proverb.add_new_proverb_to_database.assert_called_with(new_proverb_2, "Dummy parameter")
 
     def test_joka_tuutista(self, mocker):
         mock_bot = MockBob()
@@ -128,21 +138,14 @@ class TestSuite:
         message_handler.joka_tuutista(basic_message, mock_bot)
         mock_bot.sendMessage.assert_called_once_with(basic_message['chat']['id'], '..joka tuutista! 😂')
 
-    def test_respond_with_random_wisdom(self, mocker):
+    def test_respond_with_random_proverb(self, mocker):
         mock_bot = MockBob()
         mocker.patch.object(mock_bot, 'sendMessage')
-        mocker.patch("wisdom.stale_proverb")
-        wisdom.stale_proverb.return_value = "Homeinen viisaus"
-        wisdom.respond_with_random_wisdom(basic_message, mock_bot)
-        mock_bot.sendMessage.assert_called_once_with(basic_message['chat']['id'], "Homeinen viisaus")
-
-    def test_respond_with_random_wisdom(self, mocker):
-        mock_bot = MockBob()
-        mocker.patch.object(mock_bot, 'sendMessage')
-        mocker.patch("wisdom.stale_proverb")
-        wisdom.stale_proverb.return_value = "Homeinen viisaus"
-        wisdom.respond_with_random_wisdom(basic_message, mock_bot)
-        mock_bot.sendMessage.assert_called_once_with(basic_message['chat']['id'], "Homeinen viisaus")
+        mocker.patch("proverb.get_last_proverb_with_randomness")
+        mocker.patch("proverb.update_proverb_access_date_and_count")
+        proverb.get_last_proverb_with_randomness.return_value = MockProverb()
+        proverb.respond_with_random_proverb(basic_message, mock_bot)
+        mock_bot.sendMessage.assert_called_once_with(basic_message['chat']['id'], "Homeinen viisaus ")
 
 
 class MockBob:

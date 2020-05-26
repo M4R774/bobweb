@@ -1,5 +1,5 @@
 import data_handler
-import wisdom
+import proverb
 import re
 from random import randint
 import random
@@ -53,9 +53,9 @@ def msg_sorter(msg, bot):
     if msg['text'].lower() == "huutista":
         joka_tuutista(msg, bot)
     elif msg['text'].lower() == 'viisaus':
-        wisdom.respond_with_random_wisdom(msg, bot)
+        proverb.respond_with_random_proverb(msg, bot)
     elif msg['text'][:14].lower() == 'uusi viisaus: ':
-        wisdom.add_new_wisdom_to_database(msg, bot)
+        proverb.add_new_proverb_to_database(msg, bot)
 
 
 def joka_tuutista(msg, bot):
