@@ -22,12 +22,18 @@ logger = logging.getLogger("bob_logger")
 def respond_with_random_proverb(msg, bot):
     proverb = get_proverb_as_string()
     bot.sendMessage(msg['chat']['id'], proverb)
+    # TODO: 10% chance for the unix wisdom
 
 
 def add_new_proverb_to_database(msg, bot):
-    # TODO: Max char limit to?
-    # TODO: 10% chance for the unix wisdom
-    pass
+    if msg['text'][:14].lower() == 'uusi viisaus: ':
+        # TODO: Tässähän ei oo mitään järkee
+        sender_name = str(TelegramUser.objects.get(id=str(msg['from']['id'])))
+        proverb = Proverb(proverb=msg['text'][14:], author=sender_name, date=date.today())
+        proverb.save()
+        reply = 'Viisaus tallennettu. '
+        bot.sendMessage(msg['chat']['id'], reply)
+        return proverb
 
 
 """

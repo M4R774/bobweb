@@ -83,13 +83,6 @@ moldy_proverb_0 = {
 }
 
 
-class MockProverb:
-    def __init__(self):
-        self.author = None
-        self.date = None
-        self.proverb = "Homeinen viisaus"
-
-
 class TestSuite:
     def test_tests(self):
         assert True == True
@@ -147,7 +140,37 @@ class TestSuite:
         proverb.respond_with_random_proverb(basic_message, mock_bot)
         mock_bot.sendMessage.assert_called_once_with(basic_message['chat']['id'], "Homeinen viisaus ")
 
+    def test_add_new_proverb_to_database(self, mocker):
+        mock_bot = MockBob()
+
+        # Negative test
+        mocker.patch.object(mock_bot, 'sendMessage')
+        proverb.add_new_proverb_to_database(new_proverb_invalid_0, mock_bot)
+        proverb.add_new_proverb_to_database(new_proverb_invalid_1, mock_bot)
+        proverb.add_new_proverb_to_database(new_proverb_invalid_2, mock_bot)
+        mock_bot.sendMessage.assert_not_called()
+
+        # Positive test
+        proverb.add_new_proverb_to_database(new_proverb_0, mock_bot)
+        mock_bot.sendMessage.assert_called_once_with(basic_message['chat']['id'], 'Viisaus tallennettu. ')
+        mocker.reset_mock()
+
+        proverb.add_new_proverb_to_database(new_proverb_1, mock_bot)
+        mock_bot.sendMessage.assert_called_once_with(basic_message['chat']['id'], 'Viisaus tallennettu. ')
+        mocker.reset_mock()
+
+        proverb.add_new_proverb_to_database(new_proverb_2, mock_bot)
+        mock_bot.sendMessage.assert_called_once_with(basic_message['chat']['id'], 'Viisaus tallennettu. ')
+        mocker.reset_mock()
+
 
 class MockBob:
     def sendMessage(self, message, mock_bot):
         return 0
+
+
+class MockProverb:
+    def __init__(self):
+        self.author = None
+        self.date = None
+        self.proverb = "Homeinen viisaus"
